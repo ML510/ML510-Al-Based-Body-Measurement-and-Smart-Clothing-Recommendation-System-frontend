@@ -1,0 +1,371 @@
+/* ============================================
+   NewMeasurement.css
+   AI-Powered Fitting — dark gold luxury theme
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=DM+Sans:wght@400;500;600&display=swap');
+
+:root {
+  --nm-bg:           #14110E;
+  --nm-card:         #1F1C18;
+  --nm-gold:         #B68B42;
+  --nm-gold-light:   #D4A34D;
+  --nm-gold-dim:     rgba(182, 139, 66, 0.18);
+  --nm-text:         #E8E6E3;
+  --nm-muted:        #8A8680;
+  --nm-border:       #3D3832;
+  --nm-error:        #f87171;
+}
+
+/* ── Root ── */
+.nm-root {
+  min-height: 100vh;
+  background-color: var(--nm-bg);
+  color: var(--nm-text);
+  font-family: 'DM Sans', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4rem 1rem 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Background glow ── */
+.nm-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top center, rgba(182, 139, 66, 0.13) 0%, transparent 55%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Header ── */
+.nm-header {
+  text-align: center;
+  z-index: 1;
+  margin-bottom: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.nm-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(182, 139, 66, 0.3);
+  background: rgba(182, 139, 66, 0.1);
+  color: var(--nm-gold);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.nm-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.25rem, 5vw, 3.25rem);
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+}
+
+.nm-title-script {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--nm-gold-light);
+}
+
+/* ── Main ── */
+.nm-main {
+  width: 100%;
+  max-width: 56rem;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── Stepper ── */
+.nm-stepper {
+  width: 100%;
+  max-width: 40rem;
+  margin-bottom: 3rem;
+  padding: 0 1rem;
+}
+
+.nm-stepper-list {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.nm-step-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+/* connector line between steps */
+.nm-stepper-line {
+  position: absolute;
+  top: 1.25rem; /* vertically centers on the circle (h-10 / 2 = 20px) */
+  left: calc(50% + 1.4rem);
+  right: calc(-50% + 1.4rem);
+  height: 1px;
+  background-color: var(--nm-border);
+  z-index: 0;
+}
+
+.nm-step-circle {
+  position: relative;
+  z-index: 1;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.step-active {
+  border: 2px solid var(--nm-gold);
+  background: var(--nm-bg);
+  color: var(--nm-gold);
+}
+
+.step-done {
+  border: 2px solid var(--nm-gold);
+  background: var(--nm-gold);
+  color: var(--nm-bg);
+}
+
+.step-inactive {
+  border: 1px solid var(--nm-border);
+  background: var(--nm-bg);
+  color: var(--nm-muted);
+}
+
+.nm-step-label {
+  margin-top: 0.6rem;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.label-active {
+  color: #fff;
+}
+
+.label-inactive {
+  color: var(--nm-muted);
+}
+
+/* ── Card ── */
+.nm-card {
+  width: 100%;
+  background: var(--nm-card);
+  border: 1px solid var(--nm-border);
+  border-radius: 1.25rem;
+  padding: 2.5rem;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+  animation: fadeUp 0.35s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.nm-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 2.25rem;
+}
+
+.nm-card-icon {
+  flex-shrink: 0;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: var(--nm-gold-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nm-card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.nm-card-sub {
+  font-size: 0.85rem;
+  color: var(--nm-muted);
+  margin-top: 0.2rem;
+}
+
+/* ── Form ── */
+.nm-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.nm-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.nm-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .nm-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.nm-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--nm-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+.nm-optional {
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.65rem;
+}
+
+.nm-input {
+  width: 100%;
+  background: var(--nm-bg);
+  border: 1px solid var(--nm-border);
+  color: var(--nm-text);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.nm-input::placeholder {
+  color: #5C5852;
+}
+
+.nm-input:focus {
+  border-color: var(--nm-gold);
+  box-shadow: 0 0 0 2px rgba(182, 139, 66, 0.2);
+}
+
+.nm-input-error {
+  border-color: var(--nm-error) !important;
+  box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.15) !important;
+}
+
+.nm-error {
+  font-size: 0.75rem;
+  color: var(--nm-error);
+  margin-top: 0.1rem;
+}
+
+.nm-divider {
+  border: none;
+  border-top: 1px solid var(--nm-border);
+  margin: 0.5rem 0;
+}
+
+/* ── Actions ── */
+.nm-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.25rem;
+}
+
+.nm-back-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: transparent;
+  border: none;
+  color: var(--nm-muted);
+  font-size: 0.88rem;
+  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  padding: 0.5rem 0.5rem;
+  border-radius: 0.5rem;
+  transition: color 0.2s;
+}
+
+.nm-back-btn:hover:not(:disabled) {
+  color: var(--nm-text);
+}
+
+.nm-back-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.nm-continue-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--nm-gold);
+  color: var(--nm-bg);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.nm-continue-btn:hover {
+  background: var(--nm-gold-light);
+  transform: translateX(2px);
+}
+
+.nm-continue-btn:active {
+  transform: translateX(0);
+}
+
+/* ── Step counter ── */
+.nm-step-counter {
+  margin-top: 1.5rem;
+  font-size: 0.72rem;
+  color: var(--nm-muted);
+  letter-spacing: 0.06em;
+}
