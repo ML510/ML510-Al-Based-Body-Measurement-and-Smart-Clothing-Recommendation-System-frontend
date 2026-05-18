@@ -119,18 +119,10 @@ export default function NewCustomer() {
 }
 
   const [currentStep, setCurrentStep] = useState(1);
-  // const [form, setForm] = useState({
-  //   fullName: "",
-  //   phone: "",
-  //   email: "",
-  //   address: "",
-  // });
+  
   const [errors, setErrors] = useState({});
 
-  // const handleChange = (e) => {
-  //   setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  //   setErrors((prev) => ({ ...prev, [e.target.name]: "" }));
-  // };
+  
 
   const validate = () => {
     const newErrors = {};
@@ -146,15 +138,7 @@ export default function NewCustomer() {
     return newErrors;
   };
 
-  // const handleContinue = (e) => {
-  //   e.preventDefault();
-  //   const errs = validate();
-  //   if (Object.keys(errs).length > 0) {
-  //     setErrors(errs);
-  //     return;
-  //   }
-  //   if (currentStep < STEPS.length) setCurrentStep((s) => s + 1);
-  // };
+  
 
   const handleBack = () => {
     if (currentStep > 1) setCurrentStep((s) => s - 1);
