@@ -69,3 +69,99 @@
   color: var(--atelier-muted);
   margin-top: 2px;
 }
+
+/* ── Stepper ── */
+.nm-stepper {
+  width: 100%;
+  max-width: 40rem;
+  margin-bottom: 3rem;
+  padding: 0 1rem;
+}
+
+.nm-stepper-list {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.nm-step-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+/* connector line between steps */
+.nm-stepper-line {
+  position: absolute;
+  top: 1.25rem; /* vertically centers on the circle (h-10 / 2 = 20px) */
+  left: calc(50% + 1.4rem);
+  right: calc(-50% + 1.4rem);
+  height: 1px;
+  background-color: var(--nm-border);
+  z-index: 0;
+}
+
+.nm-step-circle {
+  position: relative;
+  z-index: 1;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.nm-step-label {
+  margin-top: 0.6rem;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* ── Step counter ── */
+.nm-step-counter {
+  margin-top: 1.5rem;
+  font-size: 0.72rem;
+  color: var(--nm-muted);
+  letter-spacing: 0.06em;
+}
+
+/* ── Main ── */
+.nm-main {
+  width: 100%;
+  max-width: 56rem;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.step-active {
+  border: 2px solid var(--nm-gold);
+  background: var(--nm-bg);
+  color: var(--nm-gold);
+}
+
+.step-done {
+  border: 2px solid var(--nm-gold);
+  background: var(--nm-gold);
+  color: var(--nm-bg);
+}
+
+.step-inactive {
+  border: 1px solid var(--nm-border);
+  background: var(--nm-bg);
+  color: var(--nm-muted);
+}

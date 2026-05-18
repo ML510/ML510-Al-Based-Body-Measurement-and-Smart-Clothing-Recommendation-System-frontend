@@ -3,52 +3,55 @@ import "./NewCustomer.css";
 import Header from "../../components/Header";
 import { Customer } from "../../model/Customer";
 import CustomerServices from "../../services/CustomerServices";
+import HeaderTitel from "../../components/HeaderTitel";
+import SelecterBar from "../../components/SelecterBar";
+import { useNavigate } from "react-router-dom";
 
-const STEPS = [
-  { id: 1, label: "Customer" },
-  { id: 2, label: "Profile" },
-  { id: 3, label: "Garment" },
-  { id: 4, label: "AI Scan" },
-  { id: 5, label: "Order" },
-];
+// const STEPS = [
+//   { id: 1, label: "Customer" },
+//   { id: 2, label: "Profile" },
+//   { id: 3, label: "Garment" },
+//   { id: 4, label: "AI Scan" },
+//   { id: 5, label: "Order" },
+// ];
 
-function Stepper({ current }) {
-  return (
-    <nav aria-label="Progress" className="nm-stepper">
-      <ol className="nm-stepper-list" role="list">
-        {STEPS.map((step, idx) => {
-          const isActive = step.id === current;
-          const isDone = step.id < current;
-          const isLast = idx === STEPS.length - 1;
+// function Stepper({ current }) {
+//   return (
+//     <nav aria-label="Progress" className="nm-stepper">
+//       <ol className="nm-stepper-list" role="list">
+//         {STEPS.map((step, idx) => {
+//           const isActive = step.id === current;
+//           const isDone = step.id < current;
+//           const isLast = idx === STEPS.length - 1;
 
-          return (
-            <li key={step.id} className="nm-step-item">
-              {!isLast && <div className="nm-stepper-line" />}
-              <span
-                className={`nm-step-circle ${
-                  isActive
-                    ? "step-active"
-                    : isDone
-                      ? "step-done"
-                      : "step-inactive"
-                }`}
-              >
-                {isDone ? "✓" : step.id}
-              </span>
-              <span
-                className={`nm-step-label ${
-                  isActive ? "label-active" : "label-inactive"
-                }`}
-              >
-                {step.label}
-              </span>
-            </li>
-          );
-        })}
-      </ol>
-    </nav>
-  );
-}
+//           return (
+//             <li key={step.id} className="nm-step-item">
+//               {!isLast && <div className="nm-stepper-line" />}
+//               <span
+//                 className={`nm-step-circle ${
+//                   isActive
+//                     ? "step-active"
+//                     : isDone
+//                       ? "step-done"
+//                       : "step-inactive"
+//                 }`}
+//               >
+//                 {isDone ? "✓" : step.id}
+//               </span>
+//               <span
+//                 className={`nm-step-label ${
+//                   isActive ? "label-active" : "label-inactive"
+//                 }`}
+//               >
+//                 {step.label}
+//               </span>
+//             </li>
+//           );
+//         })}
+//       </ol>
+//     </nav>
+//   );
+// }
 
 export default function NewCustomer() {
   const [name, setName] = useState("");
@@ -111,14 +114,14 @@ export default function NewCustomer() {
 
     setErrors({});
 
-    setCurrentStep((s) => s + 1);
+    // setCurrentStep((s) => s + 1);
 
   } catch (error) {
     console.error("Error adding customer:", error);
   }
 }
 
-  const [currentStep, setCurrentStep] = useState(1);
+  // const [currentStep, setCurrentStep] = useState(1);
   
   const [errors, setErrors] = useState({});
 
@@ -140,10 +143,10 @@ export default function NewCustomer() {
 
   
 
-  const handleBack = () => {
-    if (currentStep > 1) setCurrentStep((s) => s - 1);
-  };
-
+  // const handleBack = () => {
+  //   if (currentStep > 1) setCurrentStep((s) => s - 1);
+  // };
+const navigate = useNavigate()
   return (
     <div className="atelier-root">
       <Header />
@@ -152,31 +155,12 @@ export default function NewCustomer() {
         {/* Background glow */}
         <div className="nm-glow" />
 
-        {/* Header */}
-        <header className="nm-header">
-          <div className="nm-badge">
-            <svg
-              width="14"
-              height="14"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              viewBox="0 0 24 24"
-            >
-              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
-            </svg>
-            AI-Powered Fitting
-          </div>
-          <h1 className="nm-title">
-            New <em className="nm-title-script">measurement</em>
-          </h1>
-        </header>
+        <HeaderTitel />
 
         {/* Main */}
         <main className="nm-main">
-          <Stepper current={currentStep} />
+          {/* <Stepper current={currentStep} /> */}
+          <SelecterBar />
 
           {/* Form Card */}
           <div className="nm-card">
@@ -291,8 +275,8 @@ export default function NewCustomer() {
                 <button
                   type="button"
                   className="nm-back-btn"
-                  onClick={handleBack}
-                  disabled={currentStep === 1}
+                  // onClick={handleBack}
+                  // disabled={currentStep === 1}
                 >
                   <svg
                     width="16"
@@ -312,7 +296,10 @@ export default function NewCustomer() {
                 <button
                   type="button"
                   className="nm-continue-btn"
-                  onClick={setCustomer}
+                  onClick={() => {
+                    setCustomer();
+                    navigate('/select-profile');
+                  }}
                 >
                   Continue
                   <svg
@@ -333,8 +320,11 @@ export default function NewCustomer() {
           </div>
 
           {/* Step indicator text */}
-          <p className="nm-step-counter">
+          {/* <p className="nm-step-counter">
             Step {currentStep} of {STEPS.length}
+          </p> */}
+          <p className="nm-step-counter">
+            Step {1} of {5}
           </p>
         </main>
       </div>

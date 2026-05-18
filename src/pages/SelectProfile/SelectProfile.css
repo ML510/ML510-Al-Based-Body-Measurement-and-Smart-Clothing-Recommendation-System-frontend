@@ -1,0 +1,368 @@
+/* ============================================
+   SelectProfile.css
+   Step 2 — Select Profile  |  dark gold theme
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@400;500;600&display=swap');
+
+:root {
+  --sp-bg:          #0d0b09;
+  --sp-card:        #1a1612;
+  --sp-selection:   #221d18;
+  --sp-gold:        #c08d44;
+  --sp-gold-light:  #d4a65d;
+  --sp-gold-dim:    rgba(192, 141, 68, 0.12);
+  --sp-muted:       #6b7280;
+  --sp-border:      rgba(255, 255, 255, 0.06);
+  --sp-border-gold: rgba(192, 141, 68, 0.5);
+  --sp-text:        #e5e7eb;
+  --sp-error:       #f87171;
+}
+
+/* ── Root ── */
+.sp-root {
+  min-height: 100vh;
+  background-color: var(--sp-bg);
+  color: var(--sp-text);
+  font-family: 'DM Sans', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1rem;
+}
+
+/* ── Header ── */
+.sp-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sp-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.3rem 0.9rem;
+  border: 1px solid rgba(192, 141, 68, 0.4);
+  border-radius: 9999px;
+  color: var(--sp-gold);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+}
+
+.sp-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.01em;
+}
+
+.sp-title-em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--sp-gold-light);
+}
+
+/* ── Stepper ── */
+.sp-stepper {
+  width: 100%;
+  max-width: 40rem;
+  margin-bottom: 2.75rem;
+  padding: 0 0.5rem;
+}
+
+.sp-stepper-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.sp-step-wrap {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.sp-step-wrap:last-child {
+  flex: 0 0 auto;
+}
+
+.sp-step-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+/* connector line */
+.sp-line {
+  flex: 1;
+  height: 1px;
+  margin: 0 0.6rem;
+  margin-bottom: 1.4rem; /* nudge down to align with circle center */
+}
+
+.sp-line-done {
+  background: linear-gradient(90deg, var(--sp-gold) 0%, #555 100%);
+}
+
+.sp-line-inactive {
+  background: #333;
+}
+
+/* circle */
+.sp-circle {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.25s;
+}
+
+.sp-circle-done {
+  background: var(--sp-gold);
+  color: #000;
+  border: none;
+}
+
+.sp-circle-active {
+  background: transparent;
+  border: 2px solid var(--sp-gold);
+  color: var(--sp-gold);
+}
+
+.sp-circle-inactive {
+  background: transparent;
+  border: 1px solid #444;
+  color: var(--sp-muted);
+  opacity: 0.45;
+}
+
+.sp-step-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.sp-label-active {
+  color: #fff;
+}
+
+.sp-label-inactive {
+  color: var(--sp-muted);
+}
+
+/* ── Card ── */
+.sp-card {
+  width: 100%;
+  max-width: 48rem;
+  background: var(--sp-card);
+  border: 1px solid var(--sp-border);
+  border-radius: 2rem;
+  padding: 3rem;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
+}
+
+.sp-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.sp-card-icon {
+  flex-shrink: 0;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sp-card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.sp-card-sub {
+  font-size: 0.85rem;
+  color: var(--sp-muted);
+  margin-top: 0.25rem;
+}
+
+/* ── Profile Grid ── */
+.sp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+@media (max-width: 600px) {
+  .sp-grid {
+    grid-template-columns: 1fr;
+  }
+  .sp-card {
+    padding: 1.75rem;
+    border-radius: 1.5rem;
+  }
+}
+
+.sp-profile-card {
+  position: relative;
+  text-align: left;
+  background: var(--sp-selection);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 1.25rem;
+  padding: 2rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.15s ease;
+  outline: none;
+}
+
+.sp-profile-card:hover {
+  border-color: var(--sp-gold);
+  background: rgba(192, 141, 68, 0.05);
+}
+
+.sp-profile-card:focus-visible {
+  box-shadow: 0 0 0 2px var(--sp-gold);
+}
+
+.sp-profile-selected {
+  border-color: var(--sp-gold) !important;
+  background: var(--sp-gold-dim) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(192, 141, 68, 0.15);
+}
+
+.sp-profile-emoji {
+  display: block;
+  font-size: 2.5rem;
+  margin-bottom: 1.25rem;
+  line-height: 1;
+}
+
+.sp-profile-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  color: #fff;
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+}
+
+.sp-profile-desc {
+  font-size: 0.82rem;
+  color: var(--sp-muted);
+}
+
+.sp-selected-chip {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sp-gold);
+  background: rgba(192, 141, 68, 0.12);
+  border: 1px solid rgba(192, 141, 68, 0.3);
+  border-radius: 9999px;
+  padding: 0.2rem 0.6rem;
+}
+
+/* ── Error ── */
+.sp-error {
+  font-size: 0.78rem;
+  color: var(--sp-error);
+  margin-bottom: 1rem;
+  margin-top: -1.5rem;
+}
+
+/* ── Divider ── */
+.sp-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--sp-border);
+  margin-bottom: 1.75rem;
+}
+
+/* ── Actions ── */
+.sp-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sp-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 0.88rem;
+  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  padding: 0.5rem 0.25rem;
+  border-radius: 0.5rem;
+  transition: color 0.2s;
+}
+
+.sp-back-btn:hover {
+  color: var(--sp-gold);
+}
+
+.sp-back-btn svg {
+  transition: transform 0.2s;
+}
+
+.sp-back-btn:hover svg {
+  transform: translateX(-3px);
+}
+
+.sp-continue-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--sp-gold);
+  color: #000;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.15s;
+}
+
+.sp-continue-btn:hover {
+  background: var(--sp-gold-light);
+  box-shadow: 0 0 18px rgba(192, 141, 68, 0.3);
+  transform: translateX(2px);
+}
+
+.sp-continue-btn:active {
+  transform: translateX(0);
+}
