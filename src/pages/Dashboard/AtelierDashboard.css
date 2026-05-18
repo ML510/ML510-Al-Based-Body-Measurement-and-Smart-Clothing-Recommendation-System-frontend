@@ -1,0 +1,546 @@
+/* ============================================
+   AtelierDashboard.css
+   Gold × Dark luxury tailor dashboard styles
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --atelier-dark:        #0f0c0a;
+  --atelier-card:        #1a1612;
+  --atelier-gold:        #d4a358;
+  --atelier-gold-bright: #f3c178;
+  --atelier-muted:       #8c7d6b;
+  --atelier-border:      #2d261e;
+  --atelier-green:       #4ade80;
+}
+
+/* ── Root ── */
+.atelier-root {
+  min-height: 100vh;
+  background-color: var(--atelier-dark);
+  background-image: radial-gradient(circle at top right, #2d2012 0%, #0f0c0a 55%);
+  color: #e5e7eb;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ── Header ── */
+/* .atelier-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 2.5rem;
+  border-bottom: 1px solid var(--atelier-border);
+  background: rgba(15, 12, 10, 0.55);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.brand-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--atelier-gold);
+  color: var(--atelier-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.brand-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  color: var(--atelier-gold);
+  line-height: 1;
+  letter-spacing: 0.04em;
+}
+
+.brand-sub {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--atelier-muted);
+  margin-top: 2px;
+} */
+
+/* ── Nav ── */
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.nav-item {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--atelier-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 9999px;
+  padding: 0.45rem 1.1rem;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.nav-item:hover {
+  color: var(--atelier-gold);
+}
+
+.nav-active {
+  color: var(--atelier-gold);
+  border-color: rgba(212, 163, 88, 0.3);
+  background: rgba(212, 163, 88, 0.06);
+}
+
+.icon-btn {
+  padding: 0.4rem;
+  border-radius: 50%;
+  border: 1px solid var(--atelier-border);
+  background: transparent;
+  color: var(--atelier-muted);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.icon-btn:hover {
+  background: var(--atelier-card);
+}
+
+/* ── Main ── */
+.atelier-main {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 2.5rem 3rem;
+}
+
+/* ── Greeting ── */
+.greeting-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 3rem;
+}
+
+.welcome-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.85rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(212, 163, 88, 0.2);
+  background: rgba(212, 163, 88, 0.05);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--atelier-gold);
+  margin-bottom: 1.25rem;
+}
+
+.greeting-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 5vw, 3.75rem);
+  font-weight: 700;
+  font-style: italic;
+  line-height: 1.1;
+  margin-bottom: 0.75rem;
+}
+
+.greeting-title em {
+  font-style: normal;
+}
+
+.greeting-sub {
+  color: var(--atelier-muted);
+  font-size: 1.05rem;
+}
+
+.cta-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #d4a358 0%, #b88640 100%);
+  color: var(--atelier-dark);
+  padding: 0.8rem 1.6rem;
+  border-radius: 0.85rem;
+  border: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 8px 24px rgba(212, 163, 88, 0.12);
+  white-space: nowrap;
+  align-self: flex-start;
+}
+
+.cta-btn:hover {
+  transform: scale(1.04);
+  box-shadow: 0 12px 32px rgba(212, 163, 88, 0.2);
+}
+
+/* ── Stats Grid ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.stat-card {
+  background: rgba(26, 22, 18, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(212, 163, 88, 0.1);
+  border-radius: 2rem;
+  padding: 2rem;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.stat-card:hover {
+  border-color: rgba(212, 163, 88, 0.25);
+  transform: translateY(-2px);
+}
+
+.stat-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.stat-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  background: rgba(212, 163, 88, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.stat-change {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--atelier-green);
+}
+
+.stat-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+
+.stat-label {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--atelier-muted);
+  font-weight: 700;
+}
+
+/* ── Lower Grid ── */
+.lower-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+}
+
+/* ── Orders Card ── */
+.orders-card {
+  background: rgba(26, 22, 18, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(212, 163, 88, 0.1);
+  border-radius: 2.5rem;
+  padding: 2.5rem;
+}
+
+.orders-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.orders-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.view-all-link {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--atelier-gold);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.view-all-link:hover {
+  text-decoration: underline;
+}
+
+/* ── Flowbite-inspired table ── */
+.atelier-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.9rem;
+}
+
+.atelier-table thead tr {
+  border-bottom: 1px solid var(--atelier-border);
+}
+
+.atelier-table thead th {
+  text-align: left;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--atelier-muted);
+  font-weight: 700;
+  padding: 0 1rem 1rem 1rem;
+}
+
+.atelier-table tbody tr.order-row {
+  transition: background 0.15s;
+}
+
+.atelier-table tbody tr.order-row:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.atelier-table tbody td {
+  padding: 1rem;
+  color: #d1d5db;
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(45, 38, 30, 0.5);
+}
+
+.customer-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.avatar {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: var(--atelier-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--atelier-gold);
+  font-weight: 700;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+
+.customer-name {
+  font-weight: 600;
+  color: #f3f4f6;
+}
+
+.order-id {
+  color: var(--atelier-muted);
+  font-size: 0.8rem;
+}
+
+.order-time {
+  color: var(--atelier-muted);
+  font-size: 0.82rem;
+}
+
+/* ── Status Badges ── */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.85rem;
+  border-radius: 9999px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.badge-progress {
+  background: rgba(212, 163, 88, 0.1);
+  color: var(--atelier-gold);
+  border: 1px solid rgba(212, 163, 88, 0.25);
+}
+
+.badge-ready {
+  background: rgba(74, 222, 128, 0.1);
+  color: var(--atelier-green);
+  border: 1px solid rgba(74, 222, 128, 0.2);
+}
+
+.badge-cutting {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--atelier-muted);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--atelier-gold);
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.75); }
+}
+
+.check-icon, .clock-icon {
+  font-size: 0.7rem;
+}
+
+/* ── AI Scan Card ── */
+.scan-card {
+  background: linear-gradient(135deg, #d4a358 0%, #b88640 100%);
+  color: var(--atelier-dark);
+  border-radius: 2.5rem;
+  padding: 2.5rem;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.scan-bg-deco {
+  position: absolute;
+  top: -3rem;
+  right: -3rem;
+  width: 10rem;
+  height: 10rem;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.scan-icon-wrap {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.scan-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 0.85rem;
+}
+
+.scan-desc {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin-bottom: 1.75rem;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+.scan-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--atelier-dark);
+  color: var(--atelier-gold);
+  border: none;
+  padding: 0.7rem 1.6rem;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+  margin-bottom: 1.75rem;
+  align-self: flex-start;
+}
+
+.scan-btn:hover {
+  opacity: 0.9;
+  transform: translateX(2px);
+}
+
+.scan-steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.scan-step {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.step-check {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  border: 2px solid var(--atelier-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  flex-shrink: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1200px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .lower-grid {
+    grid-template-columns: 1fr;
+  }
+  .greeting-section {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .header-nav {
+    display: none;
+  }
+  .atelier-main {
+    padding: 1.5rem 1.25rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .stat-card {
+    padding: 1.25rem;
+    border-radius: 1.25rem;
+  }
+  .stat-value {
+    font-size: 2rem;
+  }
+}

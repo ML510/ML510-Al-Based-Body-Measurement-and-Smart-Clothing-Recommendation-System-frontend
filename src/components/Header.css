@@ -1,9 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 /* ── Header ── */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:wght@300;400;500;600&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:wght@300;400;500;600&display=swap');
 
 :root {
   --atelier-dark:        #0f0c0a;
@@ -68,4 +64,4 @@
   letter-spacing: 0.18em;
   color: var(--atelier-muted);
   margin-top: 2px;
-}
+} */
