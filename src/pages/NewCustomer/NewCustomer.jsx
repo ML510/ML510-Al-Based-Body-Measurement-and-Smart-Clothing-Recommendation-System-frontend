@@ -7,146 +7,54 @@ import HeaderTitel from "../../components/HeaderTitel";
 import SelecterBar from "../../components/SelecterBar";
 import { useNavigate } from "react-router-dom";
 
-// const STEPS = [
-//   { id: 1, label: "Customer" },
-//   { id: 2, label: "Profile" },
-//   { id: 3, label: "Garment" },
-//   { id: 4, label: "AI Scan" },
-//   { id: 5, label: "Order" },
-// ];
-
-// function Stepper({ current }) {
-//   return (
-//     <nav aria-label="Progress" className="nm-stepper">
-//       <ol className="nm-stepper-list" role="list">
-//         {STEPS.map((step, idx) => {
-//           const isActive = step.id === current;
-//           const isDone = step.id < current;
-//           const isLast = idx === STEPS.length - 1;
-
-//           return (
-//             <li key={step.id} className="nm-step-item">
-//               {!isLast && <div className="nm-stepper-line" />}
-//               <span
-//                 className={`nm-step-circle ${
-//                   isActive
-//                     ? "step-active"
-//                     : isDone
-//                       ? "step-done"
-//                       : "step-inactive"
-//                 }`}
-//               >
-//                 {isDone ? "✓" : step.id}
-//               </span>
-//               <span
-//                 className={`nm-step-label ${
-//                   isActive ? "label-active" : "label-inactive"
-//                 }`}
-//               >
-//                 {step.label}
-//               </span>
-//             </li>
-//           );
-//         })}
-//       </ol>
-//     </nav>
-//   );
-// }
-
 export default function NewCustomer() {
+  const navigate = useNavigate();
+
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
 
-  // function setCustomer() {
-  //   console.log("kkkkkkkkkkkkkkkkkkk");
-  //   const customerData = new Customer("", name, phone, email, address);
-  //   console.log(customerData);
+  function setCustomer() {
+    const customerData = new Customer("", name, email, address, phone);
+    const isValid = nuliiCheck(customerData);
+    console.log("Customer Data Not Null:", isValid);
+    if (!isValid) {
+      alert("Please fill in all required fields.");
+      return false;
+    }
 
-  //   const customerservice = new CustomerServices();
-  //   customerservice.addCustomer(customerData)
-  //     .then((response) => {
-  //       console.log("Customer added successfully:", response.data);
-  //       // Optionally, you can reset the form or navigate to another page here
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error adding customer:", error);
-  //       // Handle error (e.g., show an error message to the user)
-  //     });
+    try {
+      const customerservice = new CustomerServices();
 
-  //     setName("");
-  //     setPhone("");
-  //     setEmail("");
-  //     setAddress("");
-  // }
+      const response = customerservice.addCustomer(customerData);
 
-  async function setCustomer() {
+      console.log("Customer added successfully:", response.data);
 
-  const errs = validate();
+      // CLEAR INPUTS (THIS WILL WORK NOW)
+      setName("");
+      setPhone("");
+      setEmail("");
+      setAddress("");
 
-  if (Object.keys(errs).length > 0) {
-    setErrors(errs);
-    return;
+      setErrors({});
+    } catch (error) {
+      console.error("Error adding customer:", error);
+    }
+    return true;
   }
 
-  try {
-
-    const customerData = new Customer(
-      "",
-      name,
-      phone,
-      email,
-      address
+  function nuliiCheck(customerData) {
+    return (
+      customerData.name !== "" &&
+      customerData.phoneNumber !== "" &&
+      customerData.email !== "" &&
+      customerData.address !== ""
     );
-
-    const customerservice = new CustomerServices();
-
-    const response = await customerservice.addCustomer(customerData);
-
-    console.log("Customer added successfully:", response.data);
-
-    // CLEAR INPUTS (THIS WILL WORK NOW)
-    setName("");
-    setPhone("");
-    setEmail("");
-    setAddress("");
-
-    setErrors({});
-
-    // setCurrentStep((s) => s + 1);
-
-  } catch (error) {
-    console.error("Error adding customer:", error);
   }
-}
 
-  // const [currentStep, setCurrentStep] = useState(1);
-  
   const [errors, setErrors] = useState({});
 
-  
-
-  const validate = () => {
-    const newErrors = {};
-
-    if (!name.trim()) {
-      newErrors.fullName = "Full name is required.";
-    }
-
-    if (!phone.trim()) {
-      newErrors.phone = "Phone number is required.";
-    }
-
-    return newErrors;
-  };
-
-  
-
-  // const handleBack = () => {
-  //   if (currentStep > 1) setCurrentStep((s) => s - 1);
-  // };
-const navigate = useNavigate()
   return (
     <div className="atelier-root">
       <Header />
@@ -259,7 +167,6 @@ const navigate = useNavigate()
                   name="address"
                   type="text"
                   placeholder="e.g. 123 Main Street"
-                  
                   onChange={(e) => {
                     setAddress(e.target.value);
                   }}
@@ -297,8 +204,9 @@ const navigate = useNavigate()
                   type="button"
                   className="nm-continue-btn"
                   onClick={() => {
-                    setCustomer();
-                    navigate('/select-profile');
+                    if (setCustomer()) {
+                      navigate("/select-profile");
+                    }
                   }}
                 >
                   Continue
