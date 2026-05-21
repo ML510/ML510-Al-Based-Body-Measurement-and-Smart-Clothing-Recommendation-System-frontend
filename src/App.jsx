@@ -2,7 +2,9 @@ import AtelierDashboard from "./pages/Dashboard/AtelierDashboard"
 import { createBrowserRouter,RouterProvider } from 'react-router-dom'
 import NewCustomer from "./pages/NewCustomer/NewCustomer";
 import SelectProfile from "./pages/SelectProfile/SelectProfile";
-import HeaderTitel from "./components/HeaderTitel";
+//import SelectGarment from "./pages/SelectGarment/SelectGarment";
+import SelectClothing from "./pages/SelectClothing/SelectClothing";
+
 
 const router = createBrowserRouter([
   {
@@ -18,9 +20,10 @@ const router = createBrowserRouter([
     element: <SelectProfile />,
   },
   {
-    path: "/header-title",
-    element: <HeaderTitel />,
+    path: "/select-clothing",
+    element: <SelectClothing/>,
   }
+  
 ]);
 
 function App() {

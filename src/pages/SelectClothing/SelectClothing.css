@@ -1,0 +1,351 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500;600&display=swap');
+
+/* ─── CSS Variables ─────────────────────────────────────────────────────── */
+:root {
+  --gold:          #d4af37;
+  --gold-hover:    #c2a032;
+  --gold-dim:      rgba(212, 175, 55, 0.30);
+  --gold-subtle:   rgba(212, 175, 55, 0.10);
+  --gold-faint:    rgba(212, 175, 55, 0.05);
+  --charcoal:      #141312;
+  --bg:            #0f0e0d;
+  --surface:       #1d1b1a;
+  --card:          #1a1816;
+  --border:        rgba(255, 255, 255, 0.05);
+  --border-hover:  rgba(255, 255, 255, 0.04);
+  --text:          #e5e5e5;
+  --muted:         #a3a3a3;
+  --font-serif:    'Playfair Display', serif;
+  --font-sans:     'Inter', sans-serif;
+}
+
+/* ─── Root / Page ───────────────────────────────────────────────────────── */
+.atelier-page {
+  background: radial-gradient(circle at center top, #2a2620 0%, #0f0e0d 60%);
+  min-height: 100vh;
+  font-family: var(--font-sans);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+/* ─── Header ────────────────────────────────────────────────────────────── */
+.atelier-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.atelier-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.875rem;
+  border: 1px solid var(--gold-dim);
+  border-radius: 9999px;
+  margin-bottom: 1.5rem;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--gold);
+}
+
+.atelier-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 6vw, 3.75rem);
+  color: #fff;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.atelier-title em {
+  font-style: italic;
+  color: var(--gold);
+  font-weight: 400;
+}
+
+/* ─── Stepper ───────────────────────────────────────────────────────────── */
+.stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 42rem;
+  margin-bottom: 4rem;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.step--inactive { opacity: 0.4; }
+
+.step__circle {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+
+.step__circle--done     { background: var(--gold); color: var(--charcoal); }
+.step__circle--active   { border: 2px solid var(--gold); color: var(--gold); }
+.step__circle--inactive { border: 1px solid rgba(163,163,163,0.3); color: var(--muted); }
+
+.step__label {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.step__label--done     { color: var(--muted); }
+.step__label--active   { color: var(--gold); }
+.step__label--inactive { color: var(--muted); }
+
+.stepper__line {
+  height: 1px;
+  background: var(--gold-dim);
+  flex-grow: 1;
+  margin: 0 0.75rem 2.25rem;
+}
+
+/* ─── Main Card ─────────────────────────────────────────────────────────── */
+.atelier-card {
+  width: 100%;
+  max-width: 64rem;
+  background: rgba(26, 24, 22, 0.90);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(16px);
+  border-radius: 2rem;
+  padding: 2rem;
+  box-shadow: 0 0 40px rgba(212, 175, 55, 0.10);
+}
+
+@media (min-width: 768px) {
+  .atelier-card { padding: 3.5rem; }
+}
+
+/* ─── Card Header ───────────────────────────────────────────────────────── */
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 3rem;
+}
+
+.card-icon-wrap {
+  padding: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 1rem;
+  flex-shrink: 0;
+  color: var(--gold);
+}
+
+.card-icon-wrap svg { width: 1.5rem; height: 1.5rem; display: block; }
+
+.card-title {
+  font-family: var(--font-serif);
+  font-size: 1.875rem;
+  color: #fff;
+  margin: 0 0 0.2rem;
+}
+
+.card-subtitle {
+  color: var(--muted);
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* ─── Accordion Grid ────────────────────────────────────────────────────── */
+.accordion-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+  align-items: start;
+}
+
+@media (min-width: 768px) {
+  .accordion-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* ─── Accordion Item ────────────────────────────────────────────────────── */
+.accordion-item {
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.02);
+  overflow: hidden;
+}
+
+.accordion-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  transition: background 0.2s;
+}
+
+.accordion-trigger:hover { background: rgba(255, 255, 255, 0.04); }
+.accordion-trigger:focus { outline: none; }
+
+.accordion-trigger__left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.accordion-trigger__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.accordion-trigger__label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+}
+
+.accordion-trigger__count {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.accordion-emoji { font-size: 1.25rem; }
+
+.accordion-chevron {
+  width: 1rem;
+  height: 1rem;
+  color: var(--muted);
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.accordion-chevron--open { transform: rotate(180deg); }
+
+/* ─── Chip Grid ─────────────────────────────────────────────────────────── */
+.chip-wrap {
+  padding: 0 1.25rem 1.25rem;
+  padding-top: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  animation: fadeSlide 0.2s ease;
+}
+
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Chip ──────────────────────────────────────────────────────────────── */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.625rem 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  background: transparent;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: var(--font-sans);
+}
+
+.chip:hover { background: rgba(255, 255, 255, 0.05); }
+
+.chip--selected {
+  border-color: var(--gold);
+  background: linear-gradient(135deg, rgba(212,175,55,0.10) 0%, rgba(20,19,18,0) 100%);
+}
+
+.chip__checkbox {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 0.25rem;
+  border: 1.5px solid rgba(255, 255, 255, 0.20);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.chip__checkbox--checked {
+  background: var(--gold);
+  border-color: var(--gold);
+}
+
+.chip__checkbox svg { width: 10px; height: 10px; color: var(--charcoal); }
+
+/* ─── Divider ───────────────────────────────────────────────────────────── */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin-bottom: 2.5rem;
+}
+
+/* ─── Navigation Footer ─────────────────────────────────────────────────── */
+.nav-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-weight: 500;
+  font-size: 0.9375rem;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.btn-back:hover { color: var(--gold); }
+.btn-back svg   { width: 1.25rem; height: 1.25rem; }
+
+.btn-continue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--gold);
+  color: var(--charcoal);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  font-family: var(--font-sans);
+  padding: 0.875rem 2rem;
+  border-radius: 0.75rem;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.20);
+}
+
+.btn-continue:hover  { background: var(--gold-hover); }
+.btn-continue:active { transform: scale(0.97); }
+.btn-continue svg    { width: 1.25rem; height: 1.25rem; }

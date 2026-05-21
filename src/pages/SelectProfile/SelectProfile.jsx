@@ -3,6 +3,7 @@ import "./SelectProfile.css";
 import Header from "../../components/Header";
 import HeaderTitel from "../../components/HeaderTitel";
 import SelecterBar from "../../components/SelecterBar";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -22,17 +23,13 @@ const PROFILES = [
 ];
 
 export default function SelectProfile() {
+
+  const navigate = useNavigate();
+
   const [selected, setSelected] = useState(null);
   const [error, setError] = useState("");
 
-  const handleContinue = () => {
-    if (!selected) {
-      setError("Please select a profile to continue.");
-      return;
-    }
-    setError("");
-    // if (onContinue) onContinue(selected);
-  };
+  
 
   const handleSelect = (id) => {
     setSelected(id);
@@ -116,7 +113,7 @@ export default function SelectProfile() {
             </svg>
             Back
           </button>
-          <button className="sp-continue-btn" onClick={handleContinue}>
+          <button className="sp-continue-btn" onClick={() => {navigate("/select-clothing")}}>
             Continue
             <svg
               width="16"
