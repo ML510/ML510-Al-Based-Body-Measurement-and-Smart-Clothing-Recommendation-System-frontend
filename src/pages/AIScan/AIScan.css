@@ -1,0 +1,576 @@
+/* ============================================
+   AIScan.css
+   Step 4 — AI Body Scan  |  dark gold theme
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --ais-bg:           #1A1714;
+  --ais-card-bg:      rgba(26,23,20,0.85);
+  --ais-gray:         #2C2A28;
+  --ais-lightgray:    #8C8A88;
+  --ais-gold:         #EBB355;
+  --ais-gold-dark:    #c2903b;
+  --ais-gold-dim:     rgba(235,179,85,0.1);
+  --ais-gold-glow:    rgba(235,179,85,0.25);
+  --ais-gold-border:  rgba(235,179,85,0.2);
+  --ais-white:        #F4F2EF;
+  --ais-error:        #f87171;
+  --ais-success:      #4ade80;
+}
+
+/* ── Root ── */
+.ais-root {
+  min-height: 100vh;
+  background-color: var(--ais-bg);
+  color: var(--ais-white);
+  font-family: 'DM Sans', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem 1rem 4rem;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ── Glows ── */
+.ais-glow-top {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 800px;
+  background: rgba(235,179,85,0.05);
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ais-glow-bottom {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 600px;
+  background: rgba(194,144,59,0.1);
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Header ── */
+.ais-header {
+  text-align: center;
+  width: 100%;
+  max-width: 48rem;
+  margin-bottom: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.ais-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid rgba(235,179,85,0.4);
+  border-radius: 9999px;
+  padding: 0.3rem 0.9rem;
+  background: var(--ais-gold-dim);
+  color: var(--ais-gold);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 0 15px rgba(235,179,85,0.1);
+}
+
+.ais-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.25rem, 5vw, 3.25rem);
+  font-weight: 600;
+  color: var(--ais-white);
+  letter-spacing: -0.01em;
+  margin-bottom: 2.5rem;
+}
+
+.ais-title-em {
+  font-style: italic;
+  color: var(--ais-gold);
+  font-weight: 400;
+}
+
+/* ── Stepper ── */
+.ais-stepper {
+  position: relative;
+  width: 100%;
+  max-width: 32rem;
+}
+
+.ais-track-bg {
+  position: absolute;
+  top: 1rem;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: rgba(44,42,40,0.5);
+  z-index: 0;
+  transform: translateY(-50%);
+}
+
+.ais-track-fill {
+  position: absolute;
+  top: 1rem;
+  left: 0;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(235,179,85,0.6) 0%, rgba(235,179,85,0.2) 100%);
+  z-index: 0;
+  transform: translateY(-50%);
+  transition: width 0.4s ease;
+}
+
+.ais-steps-list {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.ais-step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.ais-circle {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 600;
+  transition: all 0.25s;
+}
+
+.ais-done {
+  background: var(--ais-gold);
+  color: var(--ais-bg);
+  box-shadow: 0 0 10px rgba(235,179,85,0.3);
+  outline: 4px solid var(--ais-bg);
+  outline-offset: 0;
+}
+
+.ais-active {
+  background: var(--ais-bg);
+  border: 1px solid var(--ais-gold);
+  color: var(--ais-gold);
+  box-shadow: 0 0 15px rgba(235,179,85,0.4);
+  outline: 4px solid var(--ais-bg);
+}
+
+.ais-idle {
+  background: rgba(44,42,40,0.5);
+  border: 1px solid var(--ais-gray);
+  color: var(--ais-lightgray);
+  outline: 4px solid var(--ais-bg);
+}
+
+.ais-step-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.ais-label-active { color: var(--ais-gold); font-weight: 700; }
+.ais-label-dim    { color: var(--ais-lightgray); }
+
+/* ── Main Card ── */
+.ais-card {
+  width: 100%;
+  max-width: 48rem;
+  background: var(--ais-card-bg);
+  border: 1px solid var(--ais-gold-border);
+  border-radius: 1.75rem;
+  padding: 2rem 2.25rem;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  backdrop-filter: blur(16px);
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 640px) {
+  .ais-card { padding: 1.5rem; border-radius: 1.25rem; }
+}
+
+.ais-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.ais-card-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+  background: rgba(44,42,40,0.5);
+  border: 1px solid var(--ais-gold-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 0 15px rgba(235,179,85,0.1);
+}
+
+.ais-card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--ais-white);
+  margin-bottom: 0.2rem;
+}
+
+.ais-card-sub {
+  font-size: 0.82rem;
+  color: var(--ais-lightgray);
+  font-weight: 300;
+  letter-spacing: 0.02em;
+}
+
+/* ── Camera Viewport ── */
+.ais-viewport {
+  position: relative;
+  width: 100%;
+  max-width: 22rem;
+  margin: 0 auto;
+  aspect-ratio: 3/4;
+  background: rgba(0,0,0,0.6);
+  border-radius: 1.25rem;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.05);
+  box-shadow: inset 0 2px 20px rgba(0,0,0,0.4);
+  margin-bottom: 1.5rem;
+}
+
+/* Corner brackets */
+.ais-corner {
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  z-index: 10;
+}
+
+.ais-corner-tl { top: 1rem; left: 1rem; border-top: 2px solid rgba(235,179,85,0.6); border-left: 2px solid rgba(235,179,85,0.6); border-radius: 4px 0 0 0; }
+.ais-corner-tr { top: 1rem; right: 1rem; border-top: 2px solid rgba(235,179,85,0.6); border-right: 2px solid rgba(235,179,85,0.6); border-radius: 0 4px 0 0; }
+.ais-corner-bl { bottom: 1rem; left: 1rem; border-bottom: 2px solid rgba(235,179,85,0.6); border-left: 2px solid rgba(235,179,85,0.6); border-radius: 0 0 0 4px; }
+.ais-corner-br { bottom: 1rem; right: 1rem; border-bottom: 2px solid rgba(235,179,85,0.6); border-right: 2px solid rgba(235,179,85,0.6); border-radius: 0 0 4px 0; }
+
+/* Live video */
+.ais-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  transform: scaleX(-1); /* mirror */
+}
+
+/* ── Scan animation ── */
+.ais-scan-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 0%, rgba(235,179,85,0.04) 50%, transparent 100%);
+  z-index: 2;
+}
+
+.ais-scan-line {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, var(--ais-gold) 50%, transparent 100%);
+  z-index: 3;
+  animation: scanDown 2.5s linear infinite;
+  box-shadow: 0 0 10px var(--ais-gold), 0 0 20px rgba(235,179,85,0.3);
+}
+
+@keyframes scanDown {
+  0%   { top: 5%; }
+  100% { top: 95%; }
+}
+
+/* Progress ring */
+.ais-scan-progress-ring {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5rem;
+  height: 5rem;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ais-ring-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.ais-ring-track {
+  fill: none;
+  stroke: rgba(255,255,255,0.08);
+  stroke-width: 5;
+}
+
+.ais-ring-fill {
+  fill: none;
+  stroke: var(--ais-gold);
+  stroke-width: 5;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.12s linear;
+  filter: drop-shadow(0 0 4px rgba(235,179,85,0.5));
+}
+
+.ais-ring-pct {
+  position: relative;
+  z-index: 1;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--ais-gold);
+}
+
+/* ── Idle overlay ── */
+.ais-idle-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1.5rem;
+  background: linear-gradient(180deg, transparent 0%, rgba(26,23,20,0.8) 100%);
+}
+
+.ais-camera-glow {
+  position: absolute;
+  width: 6rem;
+  height: 6rem;
+  background: rgba(235,179,85,0.2);
+  border-radius: 50%;
+  filter: blur(20px);
+}
+
+.ais-camera-icon {
+  color: var(--ais-gold);
+  position: relative;
+  z-index: 1;
+  margin-bottom: 1.25rem;
+}
+
+.ais-idle-text {
+  font-size: 0.82rem;
+  color: var(--ais-white);
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  margin-bottom: 1.75rem;
+}
+
+.ais-enable-btn {
+  background: linear-gradient(135deg, var(--ais-gold) 0%, var(--ais-gold-dark) 100%);
+  color: var(--ais-bg);
+  border: 1px solid rgba(235,179,85,0.5);
+  border-radius: 9999px;
+  padding: 0.7rem 2rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(235,179,85,0.4);
+  transition: box-shadow 0.25s, filter 0.2s;
+}
+
+.ais-enable-btn:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 0 28px rgba(235,179,85,0.6);
+}
+
+/* ── Ready overlay ── */
+.ais-ready-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 4;
+  padding: 1rem;
+  text-align: center;
+  background: linear-gradient(0deg, rgba(26,23,20,0.85) 0%, transparent 100%);
+}
+
+.ais-ready-text {
+  font-size: 0.78rem;
+  color: rgba(235,179,85,0.85);
+  letter-spacing: 0.03em;
+}
+
+/* ── Action row ── */
+.ais-btn-group {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+  min-height: 2.5rem;
+  align-items: center;
+}
+
+.ais-scan-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, var(--ais-gold) 0%, var(--ais-gold-dark) 100%);
+  color: var(--ais-bg);
+  border: none;
+  border-radius: 9999px;
+  padding: 0.7rem 2.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(235,179,85,0.35);
+  transition: filter 0.2s, box-shadow 0.2s, transform 0.15s;
+}
+
+.ais-scan-btn:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 0 28px rgba(235,179,85,0.5);
+  transform: translateY(-1px);
+}
+
+.ais-scanning-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ais-gold);
+  letter-spacing: 0.04em;
+}
+
+.ais-pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ais-gold);
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.6); }
+}
+
+/* ── Error / Success ── */
+.ais-error {
+  font-size: 0.78rem;
+  color: var(--ais-error);
+  text-align: center;
+  margin-bottom: 0.75rem;
+}
+
+.ais-success {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: var(--ais-success);
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 0.75rem;
+}
+
+/* ── Divider / Actions ── */
+.ais-divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(255,255,255,0.05);
+  margin: 1.25rem 0;
+}
+
+.ais-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ais-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: transparent;
+  border: none;
+  color: var(--ais-white);
+  font-size: 0.9rem;
+  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  padding: 0.4rem 0.25rem;
+  transition: color 0.2s;
+}
+
+.ais-back-btn:hover { color: var(--ais-gold); }
+.ais-back-btn svg   { transition: transform 0.2s; }
+.ais-back-btn:hover svg { transform: translateX(-3px); }
+
+.ais-continue-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--ais-gold);
+  color: var(--ais-bg);
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 0.85rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(235,179,85,0.2);
+  transition: background 0.2s, box-shadow 0.2s, transform 0.15s, opacity 0.2s;
+}
+
+.ais-continue-btn:hover:not(.ais-continue-disabled) {
+  background: #f0c273;
+  box-shadow: 0 10px 24px rgba(235,179,85,0.35);
+  transform: translateX(2px);
+}
+
+.ais-continue-disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

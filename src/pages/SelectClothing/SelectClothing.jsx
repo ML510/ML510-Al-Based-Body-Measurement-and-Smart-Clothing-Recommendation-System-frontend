@@ -3,6 +3,7 @@ import "./SelectClothing.css";
 import Header from "../../components/Header";
 import HeaderTitel from "../../components/HeaderTitel";
 import SelecterBar from "../../components/SelecterBar";
+import { useNavigate } from "react-router-dom";
 
 // ─── Static Data ─────────────────────────────────────────────────────────────
 
@@ -162,6 +163,8 @@ export default function SelectClothing() {
 
   const toggle = (id) => setExpanded(prev => prev === id ? null : id);
 
+  const navigate = useNavigate();
+
   return (
     <div className="atelier-root">
       <Header />
@@ -212,7 +215,7 @@ export default function SelectClothing() {
             <IconArrowLeft />
             Back
           </button>
-          <button className="btn-continue">
+          <button className="btn-continue" onClick={() => {navigate("/ai-scan")}}>
             Continue
             <IconArrowRight />
           </button>
