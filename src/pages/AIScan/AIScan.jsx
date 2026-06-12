@@ -3,6 +3,7 @@ import "./AIScan.css";
 import Header from "../../components/Header";
 import HeaderTitel from "../../components/HeaderTitel";
 import SelecterBar from "../../components/SelecterBar";
+import UploadButton from "../../components/Button/UploadButton";
 
 // ── Camera Viewport ───────────────────────────────────
 const CameraViewport = forwardRef(function CameraViewport(
@@ -21,6 +22,7 @@ const CameraViewport = forwardRef(function CameraViewport(
       <div className="ais-corner ais-corner-tr" />
       <div className="ais-corner ais-corner-bl" />
       <div className="ais-corner ais-corner-br" />
+      
 
       {stream && (
         <video
@@ -76,6 +78,8 @@ const CameraViewport = forwardRef(function CameraViewport(
           <button className="ais-enable-btn" onClick={onEnable} type="button">
             Enable Camera
           </button>
+
+          <UploadButton />          
         </div>
       )}
 

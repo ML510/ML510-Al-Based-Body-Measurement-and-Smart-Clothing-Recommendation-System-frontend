@@ -349,3 +349,43 @@
 .btn-continue:hover  { background: var(--gold-hover); }
 .btn-continue:active { transform: scale(0.97); }
 .btn-continue svg    { width: 1.25rem; height: 1.25rem; }
+
+.chip__qty {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+
+  margin-left: auto;
+
+  background: rgba(0,0,0,.4);
+  border: 1px solid var(--gold-20);
+
+  border-radius: 6px;
+  padding: .15rem .4rem;
+}
+
+.chip__qty-btn {
+  width: 20px;
+  height: 20px;
+
+  border: none;
+  background: transparent;
+
+  color: var(--gold);
+  font-size: 1rem;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.chip__qty-btn:hover {
+  color: white;
+}
+
+.chip__qty-value {
+  color: white;
+  font-size: .8rem;
+  font-weight: 700;
+  min-width: 16px;
+  text-align: center;
+}

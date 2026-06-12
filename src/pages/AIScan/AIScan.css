@@ -402,9 +402,9 @@
 }
 
 .ais-enable-btn {
-  background: linear-gradient(135deg, var(--ais-gold) 0%, var(--ais-gold-dark) 100%);
-  color: var(--ais-bg);
-  border: 1px solid rgba(235,179,85,0.5);
+  background: linear-gradient(135deg, #EBB355 0%, #C8922E 100%);
+  color: #0F0E0D;
+  border: 1px solid rgba(235, 179, 85, 0.5);
   border-radius: 9999px;
   padding: 0.7rem 2rem;
   font-size: 0.85rem;
@@ -412,7 +412,7 @@
   font-family: 'DM Sans', sans-serif;
   letter-spacing: 0.04em;
   cursor: pointer;
-  box-shadow: 0 0 20px rgba(235,179,85,0.4);
+  box-shadow: 0 0 20px rgba(235, 179, 85, 0.4);
   transition: box-shadow 0.25s, filter 0.2s;
 }
 
@@ -573,4 +573,25 @@
 .ais-continue-disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+
+.ais-enable-btn-two {
+  background: linear-gradient(135deg, #EBB355 0%, #C8922E 100%);
+  color: #0F0E0D;
+  border: 1px solid rgba(235, 179, 85, 0.5);
+  border-radius: 9999px;
+  padding: 0.7rem 2rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(235, 179, 85, 0.4);
+  transition: box-shadow 0.25s, filter 0.2s;
+  margin-top: 0.75rem;
+}
+
+.ais-enable-btn-two:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 0 28px rgba(235,179,85,0.6);
 }
