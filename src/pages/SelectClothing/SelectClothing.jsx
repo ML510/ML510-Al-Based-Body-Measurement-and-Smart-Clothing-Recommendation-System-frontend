@@ -92,7 +92,7 @@ const IconArrowRight = () => (
 const IconGarment = () => (
   <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path d="M12 4v16m8-8H4" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
-    <path d="M12 4a8 8 0 018 8v1h-3a1 1 0 01-1-1v-4a1 1 0 00-1-1h-6a1 1 0 00-1 1v4a1 1 0 01-1 1H4v-1a8 8 0 018-8z"
+    <path d="M12 4a8 8 0 018 8v1h-3a1 1 0 01-1-1v-4a1 1 0 00-1 1h-6a1 1 0 00-1 1v4a1 1 0 01-1 1H4v-1a8 8 0 018-8z"
       strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
   </svg>
 );
@@ -103,9 +103,12 @@ function Chip({ garment, qty, onToggle, onIncrement, onDecrement }) {
   const selected = qty > 0;
 
   return (
-    <button
+    <div
+      role="button"
+      tabIndex={0}
       className={`chip${selected ? " chip--selected" : ""}`}
       onClick={() => onToggle(garment.id)}
+      onKeyDown={(e) => e.key === "Enter" && onToggle(garment.id)}
     >
       <span className={`chip__checkbox${selected ? " chip__checkbox--checked" : ""}`}>
         {selected && <IconCheck size={10} />}
@@ -135,14 +138,14 @@ function Chip({ garment, qty, onToggle, onIncrement, onDecrement }) {
           </button>
         </span>
       )}
-    </button>
+    </div>
   );
 }
 
-// ─── Accordion Item (independent open/close per item) ────────────────────────
+// ─── Accordion Item ───────────────────────────────────────────────────────────
 
 function AccordionItem({ category, quantities, onToggle, onIncrement, onDecrement }) {
-  // ✅ Doc 1 behavior: each accordion manages its own open state independently
+
   const [open, setOpen] = useState(category.id === "upper");
 
   const selectedCount = category.garments.filter(g => quantities[g.id] > 0).length;
@@ -184,11 +187,13 @@ function AccordionItem({ category, quantities, onToggle, onIncrement, onDecremen
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 export default function SelectClothing() {
-  // ✅ Doc 1 behavior: quantities map (multi-select) instead of single selectedGarment string
+
+  const [init2, setInit2] = useState(null);
+
   const [quantities, setQuantities] = useState(() => {
     const init = {};
     CATEGORIES.forEach(cat => cat.garments.forEach(g => { init[g.id] = 0; }));
-    init["shirt"] = 1; // default pre-selected
+    setInit2(init);
     return init;
   });
 
@@ -202,6 +207,8 @@ export default function SelectClothing() {
   const handleIncrement = (id) => {
     setQuantities(prev => ({ ...prev, [id]: prev[id] + 1 }));
   };
+
+  console.log("new quantities:", quantities);
 
   const handleDecrement = (id) => {
     setQuantities(prev => ({
@@ -217,16 +224,11 @@ export default function SelectClothing() {
       <Header />
       <div className="atelier-page">
 
-        {/* ── Header ── */}
         <HeaderTitel />
-
-        {/* ── Stepper ── */}
         <SelecterBar />
 
-        {/* ── Main Card ── */}
         <main className="atelier-card">
 
-          {/* Card Header */}
           <div className="card-header">
             <div className="card-icon-wrap">
               <IconGarment />
@@ -237,7 +239,6 @@ export default function SelectClothing() {
             </div>
           </div>
 
-          {/* 2-column accordion grid */}
           <div className="accordion-grid">
             {CATEGORIES.map(cat => (
               <AccordionItem
@@ -251,10 +252,8 @@ export default function SelectClothing() {
             ))}
           </div>
 
-          {/* Divider */}
           <div className="divider" />
 
-          {/* Footer */}
           <div className="nav-footer">
             <button className="btn-back">
               <IconArrowLeft />
@@ -271,4 +270,3 @@ export default function SelectClothing() {
     </div>
   );
 }
-
