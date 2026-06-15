@@ -4,6 +4,7 @@ import Header from "../../components/Header";
 import HeaderTitel from "../../components/HeaderTitel";
 import SelecterBar from "../../components/SelecterBar";
 import UploadButton from "../../components/Button/UploadButton";
+import GetMeasurementsController from "../../controlller/GetMeasurementsController";
 
 // ── Camera Viewport ───────────────────────────────────
 const CameraViewport = forwardRef(function CameraViewport(
@@ -265,6 +266,7 @@ function MeasurementsPanel({ visible }) {
 
 // ── Main Component ────────────────────────────────────
 export default function AIScan() {
+  const [capturedImage, setCapturedImage] = useState(null);
   const [cameraEnabled, setCameraEnabled] = useState(false);
   const [stream, setStream] = useState(null);
   const [scanning, setScanning] = useState(false);
@@ -272,7 +274,6 @@ export default function AIScan() {
   const [error, setError] = useState("");
   const [done, setDone] = useState(false);
   const [showResults, setShowResults] = useState(false);
-  const [capturedImage, setCapturedImage] = useState(null);
 
   const videoRef = useRef(null);
   const intervalRef = useRef(null);
@@ -333,6 +334,8 @@ export default function AIScan() {
           clearInterval(intervalRef.current);
           setScanning(false);
           setCapturedImage(imageDataURL);
+          // Pass karana setter to GetMeasurementsController
+          GetMeasurementsController({ image: imageDataURL});
           handleDisableCamera();
           setDone(true);
           setTimeout(() => setShowResults(true), 300);
@@ -446,7 +449,9 @@ export default function AIScan() {
                     </svg>
                     Start AI Scan
                   </button>
+                  
                 )}
+                
                 {scanning && (
                   <div className="ais-scanning-indicator">
                     <span className="ais-pulse-dot" />
