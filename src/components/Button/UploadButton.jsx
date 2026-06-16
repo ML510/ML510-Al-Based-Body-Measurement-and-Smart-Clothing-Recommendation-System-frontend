@@ -1,18 +1,16 @@
 import { useState, useRef } from "react";
+import GetMeasurementsController from "../../controlller/GetMeasurementsController";
 
 function UploadButton() {
   const [selectedImage, setSelectedImage] = useState(null);
   const fileInputRef = useRef(null);
-
-//   useEffect(() => {
-//     console.log("selectedImage changed:", selectedImage);
-//   }, [selectedImage]);
 
   const uploadImage = (event) => {
     const file = event.target.files[0];
 
     if (file) {
       setSelectedImage(file);
+      GetMeasurementsController({ image: file });
 
       console.log("Selected File:", file);
       console.log("Selected File:", file.name);
@@ -36,14 +34,6 @@ function UploadButton() {
         onChange={uploadImage}
         style={{ display: "none" }}
       />
-
-      {/* {selectedImage && (
-        <img
-          src={URL.createObjectURL(selectedImage)}
-          alt="Preview"
-          width={200}
-        />
-      )} */}
     </div>
   );
 }

@@ -4,6 +4,7 @@ import Header from "../../components/Header";
 import HeaderTitel from "../../components/HeaderTitel";
 import SelecterBar from "../../components/SelecterBar";
 import { useNavigate } from "react-router-dom";
+import GetMeasurementsController from "../../controlller/GetMeasurementsController";
 
 
 
@@ -35,6 +36,8 @@ export default function SelectProfile() {
     setSelected(id);
     setError("");
   };
+
+  GetMeasurementsController({ gender: selected });
 
   return (
     <div className="atelier-root">

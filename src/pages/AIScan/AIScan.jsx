@@ -5,6 +5,7 @@ import HeaderTitel from "../../components/HeaderTitel";
 import SelecterBar from "../../components/SelecterBar";
 import UploadButton from "../../components/Button/UploadButton";
 import GetMeasurementsController from "../../controlller/GetMeasurementsController";
+import HeightInput from "../../components/HeightInput";
 
 // ── Camera Viewport ───────────────────────────────────
 const CameraViewport = forwardRef(function CameraViewport(
@@ -25,13 +26,7 @@ const CameraViewport = forwardRef(function CameraViewport(
       <div className="ais-corner ais-corner-br" />
 
       {stream && (
-        <video
-          ref={videoRef}
-          autoPlay
-          playsInline
-          muted
-          className="ais-video"
-        />
+        <video ref={videoRef} autoPlay playsInline muted className="ais-video" />
       )}
 
       {scanning && (
@@ -42,10 +37,7 @@ const CameraViewport = forwardRef(function CameraViewport(
             <svg viewBox="0 0 80 80" className="ais-ring-svg">
               <circle cx="40" cy="40" r="32" className="ais-ring-track" />
               <circle
-                cx="40"
-                cy="40"
-                r="32"
-                className="ais-ring-fill"
+                cx="40" cy="40" r="32" className="ais-ring-fill"
                 strokeDasharray={`${2 * Math.PI * 32}`}
                 strokeDashoffset={`${2 * Math.PI * 32 * (1 - progress / 100)}`}
               />
@@ -55,63 +47,39 @@ const CameraViewport = forwardRef(function CameraViewport(
         </>
       )}
 
-      {/* Scan complete state */}
       {done && !scanning && (
         <div className="ais-done-overlay">
-          <svg
-            className="ais-done-icon"
-            width="40"
-            height="40"
-            fill="none"
-            stroke="#EBB355"
-            strokeWidth="1.2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            viewBox="0 0 24 24"
-          >
+          <svg className="ais-done-icon" width="40" height="40" fill="none"
+            stroke="#EBB355" strokeWidth="1.2" strokeLinecap="round"
+            strokeLinejoin="round" viewBox="0 0 24 24">
             <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
             <circle cx="12" cy="13" r="3" />
           </svg>
           <p className="ais-done-text">Scan Complete</p>
-          <button className="ais-rescan-btn" onClick={onRescan} type="button">
-            Rescan
-          </button>
+          <button className="ais-rescan-btn" onClick={onRescan} type="button">Rescan</button>
         </div>
       )}
 
       {!cameraEnabled && !scanning && !done && (
         <div className="ais-idle-overlay">
           <div className="ais-camera-glow" />
-          <svg
-            className="ais-camera-icon"
-            width="48"
-            height="48"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            viewBox="0 0 24 24"
-          >
+          <svg className="ais-camera-icon" width="48" height="48" fill="none"
+            stroke="currentColor" strokeWidth="1" strokeLinecap="round"
+            strokeLinejoin="round" viewBox="0 0 24 24">
             <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
             <circle cx="12" cy="13" r="3" />
           </svg>
-          <p className="ais-idle-text">
-            Allow camera access to begin AI body scan
-          </p>
+          <p className="ais-idle-text">Allow camera access to begin AI body scan</p>
           <button className="ais-enable-btn" onClick={onEnable} type="button">
             Enable Camera
           </button>
-          
           <UploadButton />
         </div>
       )}
 
       {cameraEnabled && !scanning && !done && (
         <div className="ais-ready-overlay">
-          <p className="ais-ready-text">
-            Camera ready — position yourself in frame
-          </p>
+          <p className="ais-ready-text">Camera ready — position yourself in frame</p>
         </div>
       )}
     </div>
@@ -152,19 +120,10 @@ const MEASUREMENTS = [
 function MeasurementsPanel({ visible }) {
   return (
     <div className={`bm-panel ${visible ? "bm-panel--visible" : ""}`}>
-      {/* Card header */}
       <div className="bm-card-head">
         <div className="bm-card-icon">
-          <svg
-            width="18"
-            height="18"
-            fill="none"
-            stroke="#EBB355"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            viewBox="0 0 24 24"
-          >
+          <svg width="18" height="18" fill="none" stroke="#EBB355"
+            strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
             <rect x="3" y="3" width="7" height="7" rx="1" />
             <rect x="14" y="3" width="7" height="7" rx="1" />
             <rect x="3" y="14" width="7" height="7" rx="1" />
@@ -175,30 +134,17 @@ function MeasurementsPanel({ visible }) {
           <h3 className="bm-title">Body Measurements</h3>
           <p className="bm-subtitle">
             AI-captured body scan results &bull;{" "}
-            {new Date().toLocaleDateString("en-US", {
-              month: "long",
-              day: "numeric",
-              year: "numeric",
-            })}
+            {new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
           </p>
         </div>
       </div>
 
       <div className="bm-divider" />
 
-      {/* Stats row */}
       <div className="bm-stats">
         <div className="bm-body-icon">
-          <svg
-            width="48"
-            height="80"
-            viewBox="0 0 56 96"
-            fill="none"
-            stroke="#EBB355"
-            strokeWidth="1.4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
+          <svg width="48" height="80" viewBox="0 0 56 96" fill="none"
+            stroke="#EBB355" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="28" cy="10" r="7" />
             <line x1="28" y1="17" x2="28" y2="52" />
             <line x1="28" y1="28" x2="8" y2="44" />
@@ -219,9 +165,7 @@ function MeasurementsPanel({ visible }) {
           ].map(({ label, value, gold }) => (
             <div key={label} className="bm-stat-row">
               <span className="bm-stat-label">{label}</span>
-              <span className={`bm-stat-value ${gold ? "bm-stat-gold" : ""}`}>
-                {value}
-              </span>
+              <span className={`bm-stat-value ${gold ? "bm-stat-gold" : ""}`}>{value}</span>
             </div>
           ))}
         </div>
@@ -229,7 +173,6 @@ function MeasurementsPanel({ visible }) {
 
       <div className="bm-divider" />
 
-      {/* Measurement groups */}
       {MEASUREMENTS.map(({ group, items }) => (
         <div key={group} className="bm-group">
           <p className="bm-group-label">{group}</p>
@@ -238,22 +181,14 @@ function MeasurementsPanel({ visible }) {
               <div key={key} className="bm-tile">
                 <div className="bm-tile-head">
                   <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                    <rect
-                      x="1"
-                      y="1"
-                      width="8"
-                      height="8"
-                      rx="1.5"
-                      stroke="#EBB355"
-                      strokeWidth="1.2"
-                    />
+                    <rect x="1" y="1" width="8" height="8" rx="1.5"
+                      stroke="#EBB355" strokeWidth="1.2" />
                   </svg>
                   <span className="bm-tile-dot" />
                 </div>
                 <p className="bm-tile-label">{label}</p>
                 <p className="bm-tile-value">
-                  {value.toFixed(1)}
-                  <span className="bm-tile-unit"> cm</span>
+                  {value.toFixed(1)}<span className="bm-tile-unit"> cm</span>
                 </p>
               </div>
             ))}
@@ -274,6 +209,7 @@ export default function AIScan() {
   const [error, setError] = useState("");
   const [done, setDone] = useState(false);
   const [showResults, setShowResults] = useState(false);
+  const [height, setHeight] = useState("");
 
   const videoRef = useRef(null);
   const intervalRef = useRef(null);
@@ -292,9 +228,7 @@ export default function AIScan() {
       setStream(s);
       setCameraEnabled(true);
     } catch {
-      setError(
-        "Camera access denied. Please allow camera permission and try again.",
-      );
+      setError("Camera access denied. Please allow camera permission and try again.");
     }
   };
 
@@ -305,10 +239,7 @@ export default function AIScan() {
   };
 
   const handleStartScan = () => {
-    if (!cameraEnabled) {
-      setError("Please enable the camera first.");
-      return;
-    }
+    if (!cameraEnabled) { setError("Please enable the camera first."); return; }
     const video = videoRef.current;
     if (!video || video.videoWidth === 0) {
       setError("Camera not ready yet. Please wait a moment and try again.");
@@ -334,8 +265,7 @@ export default function AIScan() {
           clearInterval(intervalRef.current);
           setScanning(false);
           setCapturedImage(imageDataURL);
-          // Pass karana setter to GetMeasurementsController
-          GetMeasurementsController({ image: imageDataURL});
+          GetMeasurementsController({ image: imageDataURL, height });
           handleDisableCamera();
           setDone(true);
           setTimeout(() => setShowResults(true), 300);
@@ -355,10 +285,7 @@ export default function AIScan() {
   };
 
   const handleContinue = () => {
-    if (!done) {
-      setError("Please complete the AI scan before continuing.");
-      return;
-    }
+    if (!done) { setError("Please complete the AI scan before continuing."); return; }
     // next step
   };
 
@@ -370,19 +297,10 @@ export default function AIScan() {
         <SelecterBar />
         <div className="ais-glow-bottom" />
 
-        {/* Success banner — scan complete වූ පසු */}
         {done && (
           <div className="ais-banner">
-            <svg
-              width="15"
-              height="15"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              viewBox="0 0 24 24"
-            >
+            <svg width="15" height="15" fill="none" stroke="currentColor"
+              strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
               <path d="M5 13l4 4L19 7" />
             </svg>
             Scan complete — measurements captured successfully!
@@ -390,68 +308,52 @@ export default function AIScan() {
         )}
 
         <main className="ais-card">
-          {/* ── Two-column layout ── */}
           <div className={`ais-two-col ${showResults ? "ais-two-col--results" : ""}`}>
+
             {/* LEFT — Camera side */}
             <div className="ais-left-col">
               <div className="ais-col-header">
                 <div className="ais-card-icon">
-                  <svg
-                    width="18"
-                    height="18"
-                    fill="none"
-                    stroke="#EBB355"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    viewBox="0 0 24 24"
-                  >
+                  <svg width="18" height="18" fill="none" stroke="#EBB355"
+                    strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
                     <path d="M5 3v4M3 5h4M6 17v4M4 19h4M13 3l2.22 6.66L21.88 12l-6.66 2.22L13 20.88l-2.22-6.66L4.12 12l6.66-2.22L13 3z" />
                   </svg>
                 </div>
                 <div>
                   <h2 className="ais-card-title">AI Body Scan</h2>
-                  <p className="ais-card-sub">
-                    Stand still while we capture measurements.
-                  </p>
+                  <p className="ais-card-sub">Stand still while we capture measurements.</p>
                 </div>
               </div>
 
-              {/* Camera Viewport */}
-              <CameraViewport
-                ref={videoRef}
-                stream={stream}
-                cameraEnabled={cameraEnabled}
-                onEnable={handleEnableCamera}
-                scanning={scanning}
-                progress={progress}
-                done={done}
-                onRescan={handleRescan}
-              />
+              <div className="ais-camera-row">
+                <CameraViewport
+                  ref={videoRef}
+                  stream={stream}
+                  cameraEnabled={cameraEnabled}
+                  onEnable={handleEnableCamera}
+                  scanning={scanning}
+                  progress={progress}
+                  done={done}
+                  onRescan={handleRescan}
+                />
+
+                <div className="ais-height-slot">
+                  <HeightInput value={height} onChange={setHeight} />
+                </div>
+              </div>
 
               {error && <p className="ais-error">{error}</p>}
 
-              {/* Scan button */}
               <div className="ais-btn-group">
                 {cameraEnabled && !scanning && !done && (
                   <button className="ais-scan-btn" onClick={handleStartScan}>
-                    <svg
-                      width="16"
-                      height="16"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      viewBox="0 0 24 24"
-                    >
+                    <svg width="16" height="16" fill="none" stroke="currentColor"
+                      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
                       <path d="M5 3v4M3 5h4M6 17v4M4 19h4M13 3l2.22 6.66L21.88 12l-6.66 2.22L13 20.88l-2.22-6.66L4.12 12l6.66-2.22L13 3z" />
                     </svg>
                     Start AI Scan
                   </button>
-                  
                 )}
-                
                 {scanning && (
                   <div className="ais-scanning-indicator">
                     <span className="ais-pulse-dot" />
@@ -461,39 +363,22 @@ export default function AIScan() {
               </div>
             </div>
 
-            {showResults == true && (
+            {showResults && (
               <>
                 <div className="ais-col-divider" />
-
-                
                 <div className="ais-right-col">
                   <MeasurementsPanel visible={showResults} />
                 </div>
               </>
             )}
-
-{/* ais-idle-overlay */}
-            {/* VERTICAL DIVIDER */}
-            {/* <div className="ais-col-divider" /> */}
-
-            {/* RIGHT — Measurements side */}
           </div>
 
           <div className="ais-divider" />
 
-          {/* Back / Continue */}
           <div className="ais-actions">
             <button className="ais-back-btn">
-              <svg
-                width="18"
-                height="18"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                viewBox="0 0 24 24"
-              >
+              <svg width="18" height="18" fill="none" stroke="currentColor"
+                strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
                 <path d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
               Back
@@ -504,16 +389,8 @@ export default function AIScan() {
               disabled={!done}
             >
               Continue
-              <svg
-                width="18"
-                height="18"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                viewBox="0 0 24 24"
-              >
+              <svg width="18" height="18" fill="none" stroke="currentColor"
+                strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
                 <path d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
             </button>
