@@ -3,7 +3,7 @@ import "./SelectClothing.css";
 import Header from "../../components/Header";
 import HeaderTitel from "../../components/HeaderTitel";
 import SelecterBar from "../../components/SelecterBar";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import GetMeasurementsController from "../../controlller/GetMeasurementsController";
 
 // ─── Static Data ─────────────────────────────────────────────────────────────
@@ -241,6 +241,12 @@ function AccordionItem({
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 export default function SelectClothing() {
+  const location = useLocation();
+
+  const measurementsDataObject =location.state?.measurementsDataObject;
+  const newMeasurementsDataObject = { ...measurementsDataObject };
+
+  console.log(measurementsDataObject);
   const [init2, setInit2] = useState(null);
 
   const [selectClothing, setSelectClothing] = useState("");
@@ -274,8 +280,9 @@ export default function SelectClothing() {
     }));
   };
 
+  const clothingList = [];
+
   function searchSelectClothing() {
-    const clothingList = [];
     Object.entries(quantities).forEach(([key, value]) => {
       if (value > 0) {
         //console.log(`${key}: ${value}`);
@@ -283,8 +290,15 @@ export default function SelectClothing() {
         setSelectClothing((prev) => prev + `${key}: ${value}, `);
       }
     });
+    getSelectedClothing();
 
     GetMeasurementsController({ clothing: clothingList });
+  }
+
+  function getSelectedClothing() {
+
+    newMeasurementsDataObject.clothingCodes = clothingList;
+    console.log("New GetMeasurements object:", newMeasurementsDataObject);
   }
 
   console.log("setSelectClothing:", selectClothing);
@@ -334,7 +348,7 @@ export default function SelectClothing() {
               className="btn-continue"
               onClick={() => {
                 searchSelectClothing();
-                navigate("/ai-scan");
+                navigate("/ai-scan", { state: { measurementsImageAndHeightObject: newMeasurementsDataObject } });
               }}
             >
               Continue

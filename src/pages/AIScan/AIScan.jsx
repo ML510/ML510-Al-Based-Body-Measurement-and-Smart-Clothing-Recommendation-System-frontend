@@ -6,6 +6,8 @@ import SelecterBar from "../../components/SelecterBar";
 import UploadButton from "../../components/Button/UploadButton";
 import GetMeasurementsController from "../../controlller/GetMeasurementsController";
 import HeightInput from "../../components/HeightInput";
+import { useLocation } from "react-router-dom";
+import GetMeasurementsService from "../../services/GetMeasurementsService";
 
 // ── Camera Viewport ───────────────────────────────────
 const CameraViewport = forwardRef(function CameraViewport(
@@ -211,6 +213,13 @@ export default function AIScan() {
   const [showResults, setShowResults] = useState(false);
   const [height, setHeight] = useState("");
 
+  const location = useLocation();
+
+  const measurementsDataObject =location.state?.measurementsImageAndHeightObject;
+  const newMeasurementsDataObject = { ...measurementsDataObject };
+
+  console.log(measurementsDataObject);
+
   const videoRef = useRef(null);
   const intervalRef = useRef(null);
 
@@ -265,6 +274,21 @@ export default function AIScan() {
           clearInterval(intervalRef.current);
           setScanning(false);
           setCapturedImage(imageDataURL);
+
+          newMeasurementsDataObject.image = imageDataURL;
+          newMeasurementsDataObject.heightCm = height;
+          
+
+          try {
+            const getMeasurementsService = new GetMeasurementsService();
+            const getAllMeasurements = getMeasurementsService.getMeasurements(newMeasurementsDataObject);
+console.log("ALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL",getAllMeasurements);
+
+
+          }catch (error) {
+            console.error("Error sending data to GetMeasurementsController:", error);
+          }
+
           GetMeasurementsController({ image: imageDataURL, height });
           handleDisableCamera();
           setDone(true);
