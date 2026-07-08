@@ -1,16 +1,13 @@
-import { useState, useRef } from "react";
-import GetMeasurementsController from "../../controlller/GetMeasurementsController";
+import { useRef } from "react";
 
-function UploadButton() {
-  const [selectedImage, setSelectedImage] = useState(null);
+function UploadButton({ onImageSelect }) {
   const fileInputRef = useRef(null);
 
   const uploadImage = (event) => {
     const file = event.target.files[0];
 
     if (file) {
-      setSelectedImage(file);
-      GetMeasurementsController({ image: file });
+      onImageSelect?.(file);
 
       console.log("Selected File:", file);
       console.log("Selected File:", file.name);
