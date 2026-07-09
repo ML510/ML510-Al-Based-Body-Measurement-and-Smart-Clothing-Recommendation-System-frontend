@@ -1,12 +1,9 @@
 import { useState } from "react";
-import GetMeasurementsController from "../controlller/GetMeasurementsController";
 
 function HeightInput({ value, onChange }) {
   const [unit, setUnit] = useState("cm");
   const [feet, setFeet] = useState("");
   const [inches, setInches] = useState("");
-
-  GetMeasurementsController({ height: value });
 
   const handleCmChange = (e) => {
     const v = e.target.value;

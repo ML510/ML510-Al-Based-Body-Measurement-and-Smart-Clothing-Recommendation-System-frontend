@@ -1,277 +1,13 @@
-import { useState, useRef, useEffect, useCallback, forwardRef } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import "./AIScan.css";
 import Header from "../../components/Header";
 import HeaderTitel from "../../components/HeaderTitel";
 import SelecterBar from "../../components/SelecterBar";
-import UploadButton from "../../components/Button/UploadButton";
 import HeightInput from "../../components/HeightInput";
 import { useLocation } from "react-router-dom";
 import GetMeasurementsService from "../../services/GetMeasurementsService";
-
-// ── Camera Viewport ───────────────────────────────────
-const CameraViewport = forwardRef(function CameraViewport(
-  {
-    stream,
-    cameraEnabled,
-    onEnable,
-    scanning,
-    progress,
-    done,
-    onRescan,
-    onImageSelect,
-  },
-  videoRef,
-) {
-  useEffect(() => {
-    if (videoRef.current && stream) {
-      videoRef.current.srcObject = stream;
-    }
-  }, [stream, videoRef]);
-
-  return (
-    <div className="ais-viewport">
-      <div className="ais-corner ais-corner-tl" />
-      <div className="ais-corner ais-corner-tr" />
-      <div className="ais-corner ais-corner-bl" />
-      <div className="ais-corner ais-corner-br" />
-
-      {stream && (
-        <video
-          ref={videoRef}
-          autoPlay
-          playsInline
-          muted
-          className="ais-video"
-        />
-      )}
-
-      {scanning && (
-        <>
-          <div className="ais-scan-line" />
-          <div className="ais-scan-overlay" />
-          <div className="ais-scan-progress-ring">
-            <svg viewBox="0 0 80 80" className="ais-ring-svg">
-              <circle cx="40" cy="40" r="32" className="ais-ring-track" />
-              <circle
-                cx="40"
-                cy="40"
-                r="32"
-                className="ais-ring-fill"
-                strokeDasharray={`${2 * Math.PI * 32}`}
-                strokeDashoffset={`${2 * Math.PI * 32 * (1 - progress / 100)}`}
-              />
-            </svg>
-            <span className="ais-ring-pct">{progress}%</span>
-          </div>
-        </>
-      )}
-
-      {done && !scanning && (
-        <div className="ais-done-overlay">
-          <svg
-            className="ais-done-icon"
-            width="40"
-            height="40"
-            fill="none"
-            stroke="#EBB355"
-            strokeWidth="1.2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            viewBox="0 0 24 24"
-          >
-            <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
-            <circle cx="12" cy="13" r="3" />
-          </svg>
-          <p className="ais-done-text">Scan Complete</p>
-          <button className="ais-rescan-btn" onClick={onRescan} type="button">
-            Rescan
-          </button>
-        </div>
-      )}
-
-      {!cameraEnabled && !scanning && !done && (
-        <div className="ais-idle-overlay">
-          <div className="ais-camera-glow" />
-          <svg
-            className="ais-camera-icon"
-            width="48"
-            height="48"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            viewBox="0 0 24 24"
-          >
-            <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
-            <circle cx="12" cy="13" r="3" />
-          </svg>
-          <p className="ais-idle-text">
-            Allow camera access to begin AI body scan
-          </p>
-          <button className="ais-enable-btn" onClick={onEnable} type="button">
-            Enable Camera
-          </button>
-          <UploadButton onImageSelect={onImageSelect} />
-        </div>
-      )}
-
-      {cameraEnabled && !scanning && !done && (
-        <div className="ais-ready-overlay">
-          <p className="ais-ready-text">
-            Camera ready — position yourself in frame
-          </p>
-        </div>
-      )}
-    </div>
-  );
-});
-
-// ── Body Measurements Results Panel ──────────────────
-const MEASUREMENTS = [
-  {
-    group: "UPPER BODY",
-    items: [
-      { key: "shoulder", label: "SHOULDER", value: 42.5 },
-      { key: "waist", label: "WAIST", value: 74.0 },
-      { key: "hip", label: "HIP", value: 96.0 },
-      { key: "crossBack", label: "CROSS BACK", value: 37.0 },
-      { key: "armhole", label: "ARMHOLE", value: 22.0 },
-    ],
-  },
-  {
-    group: "ARMS & SLEEVES",
-    items: [
-      { key: "sleeveLen", label: "SLEEVE LENGTH", value: 63.5 },
-      { key: "wrist", label: "WRIST", value: 16.5 },
-      { key: "fullLen", label: "FULL LENGTH", value: 158.0 },
-    ],
-  },
-  {
-    group: "LOWER BODY",
-    items: [
-      { key: "thigh", label: "THIGH", value: 58.0 },
-      { key: "knee", label: "KNEE", value: 36.0 },
-      { key: "inseam", label: "INSEAM", value: 76.5 },
-      { key: "outseam", label: "OUTSEAM", value: 104.0 },
-    ],
-  },
-];
-
-function MeasurementsPanel({ visible }) {
-  return (
-    <div className={`bm-panel ${visible ? "bm-panel--visible" : ""}`}>
-      <div className="bm-card-head">
-        <div className="bm-card-icon">
-          <svg
-            width="18"
-            height="18"
-            fill="none"
-            stroke="#EBB355"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            viewBox="0 0 24 24"
-          >
-            <rect x="3" y="3" width="7" height="7" rx="1" />
-            <rect x="14" y="3" width="7" height="7" rx="1" />
-            <rect x="3" y="14" width="7" height="7" rx="1" />
-            <rect x="14" y="14" width="7" height="7" rx="1" />
-          </svg>
-        </div>
-        <div>
-          <h3 className="bm-title">Body Measurements</h3>
-          <p className="bm-subtitle">
-            AI-captured body scan results &bull;{" "}
-            {new Date().toLocaleDateString("en-US", {
-              month: "long",
-              day: "numeric",
-              year: "numeric",
-            })}
-          </p>
-        </div>
-      </div>
-
-      <div className="bm-divider" />
-
-      <div className="bm-stats">
-        <div className="bm-body-icon">
-          <svg
-            width="48"
-            height="80"
-            viewBox="0 0 56 96"
-            fill="none"
-            stroke="#EBB355"
-            strokeWidth="1.4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <circle cx="28" cy="10" r="7" />
-            <line x1="28" y1="17" x2="28" y2="52" />
-            <line x1="28" y1="28" x2="8" y2="44" />
-            <line x1="28" y1="28" x2="48" y2="44" />
-            <line x1="28" y1="52" x2="16" y2="80" />
-            <line x1="28" y1="52" x2="40" y2="80" />
-            <line x1="16" y1="80" x2="14" y2="96" />
-            <line x1="40" y1="80" x2="42" y2="96" />
-          </svg>
-        </div>
-        <div className="bm-stat-list">
-          {[
-            { label: "Scan quality", value: "Excellent", gold: true },
-            { label: "Confidence", value: "98.4%", gold: true },
-            { label: "Points mapped", value: "12 / 12" },
-            { label: "Unit", value: "cm" },
-            { label: "Profile", value: "Standard" },
-          ].map(({ label, value, gold }) => (
-            <div key={label} className="bm-stat-row">
-              <span className="bm-stat-label">{label}</span>
-              <span className={`bm-stat-value ${gold ? "bm-stat-gold" : ""}`}>
-                {value}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="bm-divider" />
-
-      {MEASUREMENTS.map(({ group, items }) => (
-        <div key={group} className="bm-group">
-          <p className="bm-group-label">{group}</p>
-          <div className="bm-grid">
-            {items.map(({ key, label, value }) => (
-              <div key={key} className="bm-tile">
-                <div className="bm-tile-head">
-                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                    <rect
-                      x="1"
-                      y="1"
-                      width="8"
-                      height="8"
-                      rx="1.5"
-                      stroke="#EBB355"
-                      strokeWidth="1.2"
-                    />
-                  </svg>
-                  <span className="bm-tile-dot" />
-                </div>
-                <p className="bm-tile-label">{label}</p>
-                <p className="bm-tile-value">
-                  {value.toFixed(1)}
-                  <span className="bm-tile-unit"> cm</span>
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-export function GetUplodImage() {
-  console.log("GGGGGGGGGGGGGGGGGGGGGGG");
-}
+import MeasurementsPanel from "../../components/MeasurementsPanel";
+import { CameraViewport } from "../../components/CameraViewport";
 
 // ── Main Component ────────────────────────────────────
 export default function AIScan(props) {
@@ -286,6 +22,7 @@ export default function AIScan(props) {
   const [done, setDone] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [height, setHeight] = useState("");
+  const [measurementResults, setMeasurementResults] = useState(null);
 
   const location = useLocation();
 
@@ -326,25 +63,33 @@ export default function AIScan(props) {
   const passMeasurements = useCallback(() => {
     const finalImage = capturedImage || uploadedImage;
 
-    // ⭐ Guard: image නැත්නම් API call එකක් යවන්නෙ නෑ (mount වෙනකොටම fire වෙන bug එක මෙතනින් නවතිනවා)
     if (!finalImage) {
       console.log("passMeasurements skipped — no image yet");
       return;
     }
 
-    // ⭐ Guard: gender/clothingCodes නැත්නම් backend එකට යවන්නෙ නෑ, console එකේ පෙන්නනවා
     const gender = measurementsDataObject?.gender;
     const clothingCodes = measurementsDataObject?.clothingCodes;
 
     if (!gender) {
-      console.error("Missing gender — measurementsDataObject:", measurementsDataObject);
-      setError("Gender information is missing. Please go back and select gender.");
+      console.error(
+        "Missing gender — measurementsDataObject:",
+        measurementsDataObject,
+      );
+      setError(
+        "Gender information is missing. Please go back and select gender.",
+      );
       return;
     }
 
     if (!clothingCodes || clothingCodes.length === 0) {
-      console.error("Missing clothingCodes — measurementsDataObject:", measurementsDataObject);
-      setError("Clothing selection is missing. Please go back and select clothing.");
+      console.error(
+        "Missing clothingCodes — measurementsDataObject:",
+        measurementsDataObject,
+      );
+      setError(
+        "Clothing selection is missing. Please go back and select clothing.",
+      );
       return;
     }
 
@@ -362,41 +107,37 @@ export default function AIScan(props) {
     getMeasurementsService
       .getMeasurements(payload)
       .then((result) => {
+        setMeasurementResults(result);
         console.log("Measurements result:", result);
+
         setTimeout(() => setShowResults(true), 300);
       })
       .catch((error) => {
-        console.error("Error sending data to GetMeasurementsController:", error);
+        console.error(
+          "Error sending data to GetMeasurementsController:",
+          error,
+        );
         setError("Failed to analyze scan. Please try again.");
       });
   }, [capturedImage, height, measurementsDataObject, uploadedImage]);
 
   function dataURLtoFile(dataurl, filename) {
+    const arr = dataurl.split(",");
 
-  const arr = dataurl.split(",");
+    const mime = arr[0].match(/:(.*?);/)[1];
 
-  const mime =
-    arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
 
-  const bstr =
-    atob(arr[1]);
+    let n = bstr.length;
 
-  let n = bstr.length;
+    const u8arr = new Uint8Array(n);
 
-  const u8arr =
-    new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
 
-  while (n--) {
-    u8arr[n] =
-      bstr.charCodeAt(n);
+    return new File([u8arr], filename, { type: mime });
   }
-
-  return new File(
-    [u8arr],
-    filename,
-    { type: mime }
-  );
-}
 
   const handleStartScan = () => {
     if (!cameraEnabled) {
@@ -429,14 +170,8 @@ export default function AIScan(props) {
           clearInterval(intervalRef.current);
           setScanning(false);
           setCapturedImage(imageFile);
-
-          // GetMeasurementsController({ image: imageDataURL, height });
           handleDisableCamera();
           setDone(true);
-          //setTimeout(() => setShowResults(true), 300);
-          
-          // passMeasurements();
-
           return 100;
         }
         return p + 2;
@@ -444,11 +179,7 @@ export default function AIScan(props) {
     }, 60);
   };
 
-  // useEffect(() => {
-  //   passMeasurements();
-  // }, [passMeasurements]);
-
-   useEffect(() => {
+  useEffect(() => {
     if (!capturedImage && !uploadedImage) return;
 
     const timeoutId = window.setTimeout(() => {
@@ -471,7 +202,6 @@ export default function AIScan(props) {
       setError("Please complete the AI scan before continuing.");
       return;
     }
-    // next step
   };
 
   return (
@@ -580,7 +310,10 @@ export default function AIScan(props) {
               <>
                 <div className="ais-col-divider" />
                 <div className="ais-right-col">
-                  <MeasurementsPanel visible={showResults} />
+                  <MeasurementsPanel
+                    visible={showResults}
+                    results={measurementResults}
+                  />
                 </div>
               </>
             )}
