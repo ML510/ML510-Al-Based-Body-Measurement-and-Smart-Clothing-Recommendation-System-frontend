@@ -324,24 +324,79 @@ export default function AIScan(props) {
   };
 
   const passMeasurements = useCallback(() => {
-    console.log("Measurements Function Image", capturedImage);
-    console.log("Measurements Function Height", height);
-    console.log("Measurements Function uploadedImage", uploadedImage);
+    const finalImage = capturedImage || uploadedImage;
+
+    // ⭐ Guard: image නැත්නම් API call එකක් යවන්නෙ නෑ (mount වෙනකොටම fire වෙන bug එක මෙතනින් නවතිනවා)
+    if (!finalImage) {
+      console.log("passMeasurements skipped — no image yet");
+      return;
+    }
+
+    // ⭐ Guard: gender/clothingCodes නැත්නම් backend එකට යවන්නෙ නෑ, console එකේ පෙන්නනවා
+    const gender = measurementsDataObject?.gender;
+    const clothingCodes = measurementsDataObject?.clothingCodes;
+
+    if (!gender) {
+      console.error("Missing gender — measurementsDataObject:", measurementsDataObject);
+      setError("Gender information is missing. Please go back and select gender.");
+      return;
+    }
+
+    if (!clothingCodes || clothingCodes.length === 0) {
+      console.error("Missing clothingCodes — measurementsDataObject:", measurementsDataObject);
+      setError("Clothing selection is missing. Please go back and select clothing.");
+      return;
+    }
 
     const payload = {
       ...(measurementsDataObject || {}),
-      image: capturedImage || uploadedImage || measurementsDataObject?.image,
+      gender,
+      clothingCodes,
+      image: finalImage,
       heightCm: height,
     };
 
-    try {
-      const getMeasurementsService = new GetMeasurementsService();
-      const getAllMeasurements = getMeasurementsService.getMeasurements(payload);
-      console.log("ALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL", getAllMeasurements);
-    } catch (error) {
-      console.error("Error sending data to GetMeasurementsController:", error);
-    }
+    console.log("Sending payload:", payload);
+
+    const getMeasurementsService = new GetMeasurementsService();
+    getMeasurementsService
+      .getMeasurements(payload)
+      .then((result) => {
+        console.log("Measurements result:", result);
+        setTimeout(() => setShowResults(true), 300);
+      })
+      .catch((error) => {
+        console.error("Error sending data to GetMeasurementsController:", error);
+        setError("Failed to analyze scan. Please try again.");
+      });
   }, [capturedImage, height, measurementsDataObject, uploadedImage]);
+
+  function dataURLtoFile(dataurl, filename) {
+
+  const arr = dataurl.split(",");
+
+  const mime =
+    arr[0].match(/:(.*?);/)[1];
+
+  const bstr =
+    atob(arr[1]);
+
+  let n = bstr.length;
+
+  const u8arr =
+    new Uint8Array(n);
+
+  while (n--) {
+    u8arr[n] =
+      bstr.charCodeAt(n);
+  }
+
+  return new File(
+    [u8arr],
+    filename,
+    { type: mime }
+  );
+}
 
   const handleStartScan = () => {
     if (!cameraEnabled) {
@@ -359,6 +414,7 @@ export default function AIScan(props) {
     canvas.height = video.videoHeight;
     canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
     const imageDataURL = canvas.toDataURL("image/png");
+    const imageFile = dataURLtoFile(imageDataURL, "scan.png");
 
     setScanning(true);
     setProgress(0);
@@ -372,12 +428,15 @@ export default function AIScan(props) {
         if (p >= 100) {
           clearInterval(intervalRef.current);
           setScanning(false);
-          setCapturedImage(imageDataURL);
+          setCapturedImage(imageFile);
 
           // GetMeasurementsController({ image: imageDataURL, height });
           handleDisableCamera();
           setDone(true);
-          setTimeout(() => setShowResults(true), 300);
+          //setTimeout(() => setShowResults(true), 300);
+          
+          // passMeasurements();
+
           return 100;
         }
         return p + 2;
@@ -385,9 +444,19 @@ export default function AIScan(props) {
     }, 60);
   };
 
-  useEffect(() => {
-    passMeasurements();
-  }, [passMeasurements]);
+  // useEffect(() => {
+  //   passMeasurements();
+  // }, [passMeasurements]);
+
+   useEffect(() => {
+    if (!capturedImage && !uploadedImage) return;
+
+    const timeoutId = window.setTimeout(() => {
+      passMeasurements();
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [capturedImage, uploadedImage, passMeasurements]);
 
   const handleRescan = () => {
     setDone(false);

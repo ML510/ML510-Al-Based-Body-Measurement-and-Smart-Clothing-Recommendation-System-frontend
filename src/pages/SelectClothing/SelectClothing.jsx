@@ -4,7 +4,6 @@ import Header from "../../components/Header";
 import HeaderTitel from "../../components/HeaderTitel";
 import SelecterBar from "../../components/SelecterBar";
 import { useNavigate, useLocation } from "react-router-dom";
-import GetMeasurementsController from "../../controlller/GetMeasurementsController";
 
 // ─── Static Data ─────────────────────────────────────────────────────────────
 
@@ -242,14 +241,9 @@ function AccordionItem({
 
 export default function SelectClothing() {
   const location = useLocation();
+  const navigate = useNavigate();
 
-  const measurementsDataObject =location.state?.measurementsDataObject;
-  const newMeasurementsDataObject = { ...measurementsDataObject };
-
-  console.log(measurementsDataObject);
-  const [init2, setInit2] = useState(null);
-
-  const [selectClothing, setSelectClothing] = useState("");
+  const measurementsDataObject = location.state?.measurementsDataObject;
 
   const [quantities, setQuantities] = useState(() => {
     const init = {};
@@ -258,9 +252,10 @@ export default function SelectClothing() {
         init[g.id] = 0;
       }),
     );
-    setInit2(init);
     return init;
   });
+
+  const [error, setError] = useState("");
 
   const handleToggle = (id) => {
     setQuantities((prev) => ({
@@ -280,31 +275,27 @@ export default function SelectClothing() {
     }));
   };
 
-  const clothingList = [];
+  const handleContinue = () => {
+    const clothingList = Object.entries(quantities)
+      .filter(([, value]) => value > 0)
+      .map(([key]) => key);
 
-  function searchSelectClothing() {
-    Object.entries(quantities).forEach(([key, value]) => {
-      if (value > 0) {
-        //console.log(`${key}: ${value}`);
-        clothingList.push(`${key}`);
-        setSelectClothing((prev) => prev + `${key}: ${value}, `);
-      }
-    });
-    getSelectedClothing();
+    if (clothingList.length === 0) {
+      setError("Please select at least one clothing item.");
+      return;
+    }
 
-    GetMeasurementsController({ clothing: clothingList });
-  }
+    const newMeasurementsDataObject = {
+      ...(measurementsDataObject || {}),
+      clothingCodes: clothingList,
+    };
 
-  function getSelectedClothing() {
-
-    newMeasurementsDataObject.clothingCodes = clothingList;
     console.log("New GetMeasurements object:", newMeasurementsDataObject);
-  }
 
-  console.log("setSelectClothing:", selectClothing);
-  console.log("new quantities:", quantities);
-
-  const navigate = useNavigate();
+    navigate("/ai-scan", {
+      state: { measurementsImageAndHeightObject: newMeasurementsDataObject },
+    });
+  };
 
   return (
     <div className="atelier-root">
@@ -337,6 +328,8 @@ export default function SelectClothing() {
             ))}
           </div>
 
+          {error && <p className="sp-error">{error}</p>}
+
           <div className="divider" />
 
           <div className="nav-footer">
@@ -344,13 +337,7 @@ export default function SelectClothing() {
               <IconArrowLeft />
               Back
             </button>
-            <button
-              className="btn-continue"
-              onClick={() => {
-                searchSelectClothing();
-                navigate("/ai-scan", { state: { measurementsImageAndHeightObject: newMeasurementsDataObject } });
-              }}
-            >
+            <button className="btn-continue" onClick={handleContinue}>
               Continue
               <IconArrowRight />
             </button>

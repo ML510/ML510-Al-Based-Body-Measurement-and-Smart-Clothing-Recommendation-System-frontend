@@ -4,18 +4,17 @@ import Header from "../../components/Header";
 import HeaderTitel from "../../components/HeaderTitel";
 import SelecterBar from "../../components/SelecterBar";
 import { useNavigate } from "react-router-dom";
-import GetMeasurementsController from "../../controlller/GetMeasurementsController";
 import { GetMeasurements } from "../../model/GetMeasurements";
 
 const PROFILES = [
   {
-    id: "male",
+    id: "MEN",
     emoji: "🤵",
     title: "Male",
     desc: "Shirts, suits, trousers",
   },
   {
-    id: "female",
+    id: "WOMEN",
     emoji: "👰",
     title: "Female",
     desc: "Dresses, blouses, sarees",
@@ -33,14 +32,21 @@ export default function SelectProfile() {
   const handleSelect = (id) => {
     setSelected(id);
     setError("");
-    setGender(id); // id eka kelinma pass karanawa
+    measurementsDataRef.current.gender = id;
   };
 
-  function setGender(id) {
-    measurementsDataRef.current.gender = id;
-  }
+  const handleContinue = () => {
+    if (!selected) {
+      setError("Please select a profile before continuing.");
+      return;
+    }
 
-  GetMeasurementsController({ gender: selected });
+    navigate("/select-clothing", {
+      state: {
+        measurementsDataObject: measurementsDataRef.current,
+      },
+    });
+  };
 
   return (
     <div className="atelier-root">
@@ -119,16 +125,7 @@ export default function SelectProfile() {
               </svg>
               Back
             </button>
-            <button
-              className="sp-continue-btn"
-              onClick={() => {
-                navigate("/select-clothing", {
-                  state: {
-                    measurementsDataObject: measurementsDataRef.current,
-                  },
-                });
-              }}
-            >
+            <button className="sp-continue-btn" onClick={handleContinue}>
               Continue
               <svg
                 width="16"
