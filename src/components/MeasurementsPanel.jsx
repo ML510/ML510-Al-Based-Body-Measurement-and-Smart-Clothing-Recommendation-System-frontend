@@ -1,34 +1,133 @@
-
-// ── Body Measurements Results Panel ──────────────────
-const MEASUREMENTS = [
-  {
-    group: "UPPER BODY",
-    items: [
-      { key: "shoulder", label: "SHOULDER", value: 42.5 },
-      { key: "waist", label: "WAIST", value: 74.0 },
-      { key: "hip", label: "HIP", value: 96.0 },
-      { key: "crossBack", label: "CROSS BACK", value: 37.0 },
-      { key: "armhole", label: "ARMHOLE", value: 22.0 },
-    ],
-  },
-  {
-    group: "ARMS & SLEEVES",
-    items: [
-      { key: "sleeveLen", label: "SLEEVE LENGTH", value: 63.5 },
-      { key: "wrist", label: "WRIST", value: 16.5 },
-      { key: "fullLen", label: "FULL LENGTH", value: 158.0 },
-    ],
-  },
-  {
-    group: "LOWER BODY",
-    items: [
-      { key: "thigh", label: "THIGH", value: 58.0 },
-      { key: "knee", label: "KNEE", value: 36.0 },
-      { key: "inseam", label: "INSEAM", value: 76.5 },
-      { key: "outseam", label: "OUTSEAM", value: 104.0 },
-    ],
-  },
+const UPPER_BODY_KEYS = [
+  "shoulder",
+  "crossBack",
+  "waist",
+  "neck",
+  "chest",
+  "bust",
+  "upperBust",
+  "underBust",
+  "shoulderToWaist",
+  "apexPoint",
+  "neckDepthFront",
+  "neckDepthBack",
+  "headCircumference",
+  "headHeight",
 ];
+
+const ARMS_SLEEVES_KEYS = [
+  "armhole",
+  "armLength",
+  "sleeveLength",
+  "sleeveOpening",
+  "cuff",
+  "wrist",
+];
+
+const LOWER_BODY_KEYS = [
+  "hip",
+  "thigh",
+  "knee",
+  "inseam",
+  "outseam",
+  "ankle",
+  "fullLength",
+  "skirtLength",
+  "sideSplitHeight",
+];
+
+function ResultsArray({ resultsArray }) {
+  const isValidObject =
+    resultsArray &&
+    typeof resultsArray === "object" &&
+    !Array.isArray(resultsArray);
+
+  if (!isValidObject) {
+    console.log("INVALID RESULTS ARRAY:", resultsArray);
+    return [];
+  }
+
+  const excludedKeys = ["aiConfidence", "gender", "notes"];
+
+  const filteredResults = Object.fromEntries(
+    Object.entries(resultsArray).filter(
+      ([key, value]) =>
+        value != null && !excludedKeys.includes(key)
+    )
+  );
+
+  const createItems = (keys) =>
+    keys
+      .filter((key) => key in filteredResults)
+      .map((key) => ({
+        key,
+        label: key
+          .replace(/([A-Z])/g, " $1")
+          .toUpperCase()
+          .trim(),
+        value: filteredResults[key],
+      }));
+
+  const MEASUREMENTS = [
+    {
+      group: "UPPER BODY",
+      items: createItems(UPPER_BODY_KEYS),
+    },
+    {
+      group: "ARMS & SLEEVES",
+      items: createItems(ARMS_SLEEVES_KEYS),
+    },
+    {
+      group: "LOWER BODY",
+      items: createItems(LOWER_BODY_KEYS),
+    },
+  ];
+
+  console.log("filteredResults:", filteredResults);
+  console.log("MEASUREMENTS:", MEASUREMENTS);
+
+  return (
+    <>
+      {MEASUREMENTS.map(({ group, items }) => (
+        <div key={group} className="bm-group">
+          <p className="bm-group-label">{group}</p>
+          <div className="bm-grid">
+            {items.map(({ key, label, value }) => {
+              const displayValue =
+                typeof value === "number"
+                  ? value.toFixed(1)
+                  : String(value ?? "");
+
+              return (
+                <div key={key} className="bm-tile">
+                  <div className="bm-tile-head">
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                      <rect
+                        x="1"
+                        y="1"
+                        width="8"
+                        height="8"
+                        rx="1.5"
+                        stroke="#EBB355"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                    <span className="bm-tile-dot" />
+                  </div>
+                  <p className="bm-tile-label">{label}</p>
+                  <p className="bm-tile-value">
+                    {displayValue}
+                    <span className="bm-tile-unit"> cm</span>
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </>
+  );
+}
 
 export default function MeasurementsPanel({ visible, results }) {
   const resultSummary =
@@ -36,9 +135,8 @@ export default function MeasurementsPanel({ visible, results }) {
       ? JSON.stringify(results, null, 2)
       : null;
 
-      console.log("Results:-----------", results);
-      console.log("resultSummary:-----------", resultSummary);
-
+  console.log("Results:-----------", results);
+  console.log("resultSummary:-----------", resultSummary);
 
   return (
     <div className={`bm-panel ${visible ? "bm-panel--visible" : ""}`}>
@@ -116,46 +214,7 @@ export default function MeasurementsPanel({ visible, results }) {
       </div>
 
       <div className="bm-divider" />
-
-      {/* {resultSummary && (
-        <div className="bm-group">
-          <p className="bm-group-label">SCAN OUTPUT</p>
-          <pre style={{ whiteSpace: "pre-wrap", fontSize: "12px" }}>
-            {resultSummary}
-          </pre>
-        </div>
-      )} */}
-
-      {MEASUREMENTS.map(({ group, items }) => (
-        <div key={group} className="bm-group">
-          <p className="bm-group-label">{group}</p>
-          <div className="bm-grid">
-            {items.map(({ key, label, value }) => (
-              <div key={key} className="bm-tile">
-                <div className="bm-tile-head">
-                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                    <rect
-                      x="1"
-                      y="1"
-                      width="8"
-                      height="8"
-                      rx="1.5"
-                      stroke="#EBB355"
-                      strokeWidth="1.2"
-                    />
-                  </svg>
-                  <span className="bm-tile-dot" />
-                </div>
-                <p className="bm-tile-label">{label}</p>
-                <p className="bm-tile-value">
-                  {value.toFixed(1)}
-                  <span className="bm-tile-unit"> cm</span>
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      ))}
+      <ResultsArray resultsArray={results} />
     </div>
   );
 }
