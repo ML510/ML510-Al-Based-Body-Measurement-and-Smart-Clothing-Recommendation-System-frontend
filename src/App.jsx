@@ -5,6 +5,7 @@ import SelectProfile from "./pages/SelectProfile/SelectProfile";
 //import SelectGarment from "./pages/SelectGarment/SelectGarment";
 import SelectClothing from "./pages/SelectClothing/SelectClothing";
 import AIScan from "./pages/AIScan/AIScan";
+import OrderConfirmed from "./pages/OrderConfirmed/OrderConfirmed";
 
 
 const router = createBrowserRouter([
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
   {
     path: "/ai-scan",
     element: <AIScan/>,
+  },
+  {
+    path: "/order-confirmed",
+    element: <OrderConfirmed />,
   }
   
 ]);
