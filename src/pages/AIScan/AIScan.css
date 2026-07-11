@@ -684,6 +684,35 @@
   color: var(--ais-white); margin: 0; line-height: 1;
 }
 
+.bm-tile-value-editable {
+  cursor: text;
+}
+
+.bm-tile-edit-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.bm-tile-input {
+  width: 100%;
+  min-width: 4.5rem;
+  padding: 0.45rem 0.55rem;
+  border-radius: 0.7rem;
+  border: 1px solid rgba(235,195,120,0.35);
+  background: rgba(255,255,255,0.08);
+  color: var(--ais-white);
+  font-size: 1.1rem;
+  font-weight: 700;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.bm-tile-input:focus {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(235,179,85,0.75);
+}
+
 .bm-tile-unit {
   font-size: 0.68rem; font-weight: 400;
   color: var(--ais-lightgray);

@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const UPPER_BODY_KEYS = [
   "shoulder",
   "crossBack",
@@ -36,35 +38,59 @@ const LOWER_BODY_KEYS = [
   "sideSplitHeight",
 ];
 
-function ResultsArray({ resultsArray }) {
+
+function ResultsArray({ resultsArray, onMeasurementsChange }) {
   const isValidObject =
     resultsArray &&
     typeof resultsArray === "object" &&
     !Array.isArray(resultsArray);
 
-  if (!isValidObject) {
-    console.log("INVALID RESULTS ARRAY:", resultsArray);
-    return [];
-  }
-
   const excludedKeys = ["aiConfidence", "gender", "notes"];
 
-  const filteredResults = Object.fromEntries(
-    Object.entries(resultsArray).filter(
-      ([key, value]) => value != null && !excludedKeys.includes(key),
-    ),
-  );
+  // filteredResults - recomputed every render straight from props (cheap, no need to memoize unless huge)
+  const filteredResults = isValidObject
+    ? Object.fromEntries(
+        Object.entries(resultsArray).filter(
+          ([key, value]) => value != null && !excludedKeys.includes(key),
+        ),
+      )
+    : {};
+
+  // editedValues - current values shown/edited in UI (key -> value)
+  const [editedValues, setEditedValues] = useState(filteredResults);
+
+  // Track the last resultsArray we synced from, WITHOUT useEffect.
+  // This is React's official "adjusting state when a prop changes" pattern.
+  const [prevResultsArray, setPrevResultsArray] = useState(resultsArray);
+
+  if (resultsArray !== prevResultsArray) {
+    setPrevResultsArray(resultsArray);
+    if (isValidObject) {
+      setEditedValues(filteredResults);
+    }
+  }
+
+  // editingKey - which tile is currently in "edit mode"
+  const [editingKey, setEditingKey] = useState(null);
+
+  // tempInput - the text currently typed in the active input box
+  const [tempInput, setTempInput] = useState("");
+
+  if (!isValidObject) {
+    console.log("INVALID RESULTS ARRAY:", resultsArray);
+    return null;
+  }
 
   const createItems = (keys) =>
     keys
-      .filter((key) => key in filteredResults)
+      .filter((key) => key in editedValues)
       .map((key) => ({
         key,
         label: key
           .replace(/([A-Z])/g, " $1")
           .toUpperCase()
           .trim(),
-        value: filteredResults[key],
+        value: editedValues[key],
       }));
 
   const MEASUREMENTS = [
@@ -82,8 +108,60 @@ function ResultsArray({ resultsArray }) {
     },
   ];
 
-  console.log("filteredResults:", filteredResults);
-  console.log("MEASUREMENTS:", MEASUREMENTS);
+  // Build the "edited measurements" array whenever editedValues changes,
+  // and push it up to the parent via callback (if provided)
+  const buildMeasurementsArray = (updatedValues) => {
+    const arr = Object.entries(updatedValues).map(([key, value]) => ({
+      key,
+      label: key
+        .replace(/([A-Z])/g, " $1")
+        .toUpperCase()
+        .trim(),
+      value,
+    }));
+
+    if (typeof onMeasurementsChange === "function") {
+      onMeasurementsChange(arr);
+    }
+
+    return arr;
+  };
+
+  const startEditing = (key, currentValue) => {
+    setEditingKey(key);
+    setTempInput(String(currentValue ?? ""));
+  };
+
+  const cancelEditing = () => {
+    setEditingKey(null);
+    setTempInput("");
+  };
+
+  const saveEditing = (key) => {
+    const numericValue = parseFloat(tempInput);
+    const newValue = Number.isNaN(numericValue) ? tempInput : numericValue;
+
+    const updatedValues = {
+      ...editedValues,
+      [key]: newValue,
+    };
+
+    setEditedValues(updatedValues);
+    buildMeasurementsArray(updatedValues);
+
+    setEditingKey(null);
+    setTempInput("");
+  };
+
+  const handleKeyDown = (e, key) => {
+    if (e.key === "Enter") {
+      saveEditing(key);
+    } else if (e.key === "Escape") {
+      cancelEditing();
+    }
+  };
+
+  console.log("editedValues:", editedValues);
 
   return (
     <>
@@ -92,6 +170,8 @@ function ResultsArray({ resultsArray }) {
           <p className="bm-group-label">{group}</p>
           <div className="bm-grid">
             {items.map(({ key, label, value }) => {
+              const isEditing = editingKey === key;
+
               const displayValue =
                 typeof value === "number"
                   ? value.toFixed(1)
@@ -113,11 +193,33 @@ function ResultsArray({ resultsArray }) {
                     </svg>
                     <span className="bm-tile-dot" />
                   </div>
+
                   <p className="bm-tile-label">{label}</p>
-                  <p className="bm-tile-value">
-                    {displayValue}
-                    <span className="bm-tile-unit"> cm</span>
-                  </p>
+
+                  {isEditing ? (
+                    <div className="bm-tile-edit-wrap">
+                      <input
+                        type="text"
+                        inputMode="decimal"
+                        className="bm-tile-input"
+                        value={tempInput}
+                        autoFocus
+                        onChange={(e) => setTempInput(e.target.value)}
+                        onKeyDown={(e) => handleKeyDown(e, key)}
+                        onBlur={() => saveEditing(key)}
+                      />
+                      <span className="bm-tile-unit"> cm</span>
+                    </div>
+                  ) : (
+                    <p
+                      className="bm-tile-value bm-tile-value-editable"
+                      onClick={() => startEditing(key, value)}
+                      title="Click to edit"
+                    >
+                      {displayValue}
+                      <span className="bm-tile-unit"> cm</span>
+                    </p>
+                  )}
                 </div>
               );
             })}
