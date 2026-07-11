@@ -51,9 +51,8 @@ function ResultsArray({ resultsArray }) {
 
   const filteredResults = Object.fromEntries(
     Object.entries(resultsArray).filter(
-      ([key, value]) =>
-        value != null && !excludedKeys.includes(key)
-    )
+      ([key, value]) => value != null && !excludedKeys.includes(key),
+    ),
   );
 
   const createItems = (keys) =>
