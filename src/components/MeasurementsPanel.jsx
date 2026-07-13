@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+
 const UPPER_BODY_KEYS = [
   "shoulder",
   "crossBack",
@@ -162,6 +163,12 @@ function ResultsArray({ resultsArray, onMeasurementsChange }) {
   };
 
   console.log("editedValues:", editedValues);
+
+  // useEffect(() => {
+  //   AIScan({ EditedValues: editedValues });
+  // }, [editedValues]);
+
+  
 
   return (
     <>

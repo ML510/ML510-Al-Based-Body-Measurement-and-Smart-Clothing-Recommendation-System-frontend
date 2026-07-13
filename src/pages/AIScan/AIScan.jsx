@@ -13,6 +13,9 @@ import { CameraViewport } from "../../components/CameraViewport";
 export default function AIScan(props) {
   const [uploadedImage, setUploadedImage] = useState(props.image || null);
   console.log("UPLOADED IMAGE", uploadedImage);
+
+  const [FinalMesurements, setFinalMesurements] = useState(props.EditedValues || null);
+  console.log("FinalMesurements", FinalMesurements);
   const [capturedImage, setCapturedImage] = useState(null);
   const [cameraEnabled, setCameraEnabled] = useState(false);
   const [stream, setStream] = useState(null);
