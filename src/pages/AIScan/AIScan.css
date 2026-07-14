@@ -55,7 +55,7 @@
 
 /* ── Main Card ── */
 .ais-card {
-  width: 900px;
+  width: 1100px;
   max-width: 72rem;
   background: var(--ais-card-bg);
   border: 1px solid var(--ais-gold-border);
@@ -720,4 +720,5 @@
 
 .edit-measurement-panal{
   margin-top: 2.5rem;
+  margin-left: 7.5rem;
 }

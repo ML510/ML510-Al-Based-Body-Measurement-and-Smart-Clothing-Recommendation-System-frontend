@@ -280,15 +280,14 @@ export default function AIScan(props) {
 
                 <div className="ais-height-slot">
                   <HeightInput value={height} onChange={setHeight} />
-                  {showResults && (
-                    <div className="edit-measurement-panal">
-                    <EditMeasurementModal />
-                  </div>
-                  )}
                 </div>
               </div>
-                      
-                    
+
+              {showResults && (
+                <div className="edit-measurement-panal">
+                  <EditMeasurementModal />
+                </div>
+              )}
 
               {error && <p className="ais-error">{error}</p>}
 

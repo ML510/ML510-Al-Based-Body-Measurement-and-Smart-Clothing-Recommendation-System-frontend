@@ -9,7 +9,6 @@ const EditMeasurementModal = ({
   if (!isOpen) return null;
 
   return (
-    //<div className="emc-backdrop" onClick={onCancel}>
       <div
         className="emc-card"
         onClick={(e) => e.stopPropagation()} // prevent backdrop close when clicking card
@@ -40,7 +39,6 @@ const EditMeasurementModal = ({
           </button>
         </div>
       </div>
-    //</div>
   );
 };
 
