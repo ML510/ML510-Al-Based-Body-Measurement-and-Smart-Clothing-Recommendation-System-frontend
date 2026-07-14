@@ -717,3 +717,7 @@
   font-size: 0.68rem; font-weight: 400;
   color: var(--ais-lightgray);
 }
+
+.edit-measurement-panal{
+  margin-top: 2.5rem;
+}

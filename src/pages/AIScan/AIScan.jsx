@@ -8,13 +8,16 @@ import { useLocation } from "react-router-dom";
 import GetMeasurementsService from "../../services/GetMeasurementsService";
 import MeasurementsPanel from "../../components/MeasurementsPanel";
 import { CameraViewport } from "../../components/CameraViewport";
+import EditMeasurementModal from "../../components/EditMeasurementModal/EditMeasurementModal";
 
 // ── Main Component ────────────────────────────────────
 export default function AIScan(props) {
   const [uploadedImage, setUploadedImage] = useState(props.image || null);
   console.log("UPLOADED IMAGE", uploadedImage);
 
-  const [FinalMesurements, setFinalMesurements] = useState(props.EditedValues || null);
+  const [FinalMesurements, setFinalMesurements] = useState(
+    props.EditedValues || null,
+  );
   console.log("FinalMesurements", FinalMesurements);
   const [capturedImage, setCapturedImage] = useState(null);
   const [cameraEnabled, setCameraEnabled] = useState(false);
@@ -277,8 +280,15 @@ export default function AIScan(props) {
 
                 <div className="ais-height-slot">
                   <HeightInput value={height} onChange={setHeight} />
+                  {showResults && (
+                    <div className="edit-measurement-panal">
+                    <EditMeasurementModal />
+                  </div>
+                  )}
                 </div>
               </div>
+                      
+                    
 
               {error && <p className="ais-error">{error}</p>}
 
