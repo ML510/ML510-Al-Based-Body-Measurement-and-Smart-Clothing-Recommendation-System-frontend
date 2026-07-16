@@ -126,7 +126,7 @@
   align-self: flex-start;
   width: 100%;
   max-width: 18rem;
-  margin-left: 5.25rem;
+  margin-left: 1.25rem;
 }
 
 @media (max-width: 930px) {
@@ -719,6 +719,11 @@
 }
 
 .edit-measurement-panal{
+  margin-top: 1.5rem;
+  /* margin-left: 7.5rem; */
+}
+
+.description-entry-panal{
   margin-top: 2.5rem;
-  margin-left: 7.5rem;
+  /* margin-left: 7.5rem; */
 }

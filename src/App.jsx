@@ -6,7 +6,7 @@ import SelectProfile from "./pages/SelectProfile/SelectProfile";
 import SelectClothing from "./pages/SelectClothing/SelectClothing";
 import AIScan from "./pages/AIScan/AIScan";
 import OrderConfirmed from "./pages/OrderConfirmed/OrderConfirmed";
-import EditMeasurementModal from "./components/EditMeasurementModal/EditMeasurementModal";
+import DescriptionEntry from "./components/DescriptionEntry/DescriptionEntry";
 
 
 const router = createBrowserRouter([
@@ -35,8 +35,8 @@ const router = createBrowserRouter([
     element: <OrderConfirmed />,
   },
   {
-    path: "/edit-measurement-modal",
-    element: <EditMeasurementModal />,
+    path: "/description-entry",
+    element: <DescriptionEntry />,
   }
   
 ]);

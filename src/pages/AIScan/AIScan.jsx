@@ -9,6 +9,7 @@ import GetMeasurementsService from "../../services/GetMeasurementsService";
 import MeasurementsPanel from "../../components/MeasurementsPanel";
 import { CameraViewport } from "../../components/CameraViewport";
 import EditMeasurementModal from "../../components/EditMeasurementModal/EditMeasurementModal";
+import DescriptionEntry from "../../components/DescriptionEntry/DescriptionEntry";
 
 // ── Main Component ────────────────────────────────────
 export default function AIScan(props) {
@@ -280,12 +281,17 @@ export default function AIScan(props) {
 
                 <div className="ais-height-slot">
                   <HeightInput value={height} onChange={setHeight} />
+                  {showResults && (
+                    <div className="edit-measurement-panal">
+                      <EditMeasurementModal />
+                    </div>
+                  )}
                 </div>
               </div>
 
               {showResults && (
-                <div className="edit-measurement-panal">
-                  <EditMeasurementModal />
+                <div className="description-entry-panal">
+                  <DescriptionEntry />
                 </div>
               )}
 
