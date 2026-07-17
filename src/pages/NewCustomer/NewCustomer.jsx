@@ -28,6 +28,8 @@ export default function NewCustomer() {
       const customerservice = new CustomerServices();
 
       const response = customerservice.addCustomer(customerData);
+      
+      localStorage.setItem("customerEmail", customerData.email);
 
       console.log("Customer added successfully:", response.data);
 

@@ -19,6 +19,11 @@ export default function AIScan(props) {
   const [FinalMesurements, setFinalMesurements] = useState(
     props.EditedValues || null,
   );
+
+  const email = localStorage.getItem("customerEmail");
+
+  console.log("EMAIL", email);
+
   console.log("FinalMesurements", FinalMesurements);
   const [capturedImage, setCapturedImage] = useState(null);
   const [cameraEnabled, setCameraEnabled] = useState(false);
