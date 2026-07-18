@@ -1,12 +1,8 @@
 import EditSquareIcon from "@mui/icons-material/EditSquare";
 import "./EditMeasurementModal.css";
 
-const EditMeasurementModal = ({
-  isOpen = true,
-  onConfirm = () => {},
-  onCancel = () => {},
-}) => {
-  if (!isOpen) return null;
+export default function EditMeasurementModal() {
+  
 
   return (
       <div
@@ -26,14 +22,14 @@ const EditMeasurementModal = ({
           <button
             type="button"
             className="emc-btn emc-btn-primary"
-            onClick={onConfirm}
+            // onClick={}
           >
             Yes
           </button>
           <button
             type="button"
             className="emc-btn emc-btn-secondary"
-            onClick={onCancel}
+            // onClick={onCancel}
           >
             No
           </button>
@@ -41,5 +37,3 @@ const EditMeasurementModal = ({
       </div>
   );
 };
-
-export default EditMeasurementModal;

@@ -46,7 +46,7 @@ function ResultsArray({ resultsArray, onMeasurementsChange }) {
     typeof resultsArray === "object" &&
     !Array.isArray(resultsArray);
 
-  const excludedKeys = ["aiConfidence", "gender", "notes"];
+  const excludedKeys = ["aiConfidence", "notes"];
 
   // filteredResults - recomputed every render straight from props (cheap, no need to memoize unless huge)
   const filteredResults = isValidObject
@@ -163,12 +163,6 @@ function ResultsArray({ resultsArray, onMeasurementsChange }) {
   };
 
   console.log("editedValues:", editedValues);
-
-  // useEffect(() => {
-  //   AIScan({ EditedValues: editedValues });
-  // }, [editedValues]);
-
-  
 
   return (
     <>
