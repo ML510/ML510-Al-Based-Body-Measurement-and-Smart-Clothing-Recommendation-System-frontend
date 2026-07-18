@@ -4,27 +4,23 @@ import Header from "../../components/Header";
 import HeaderTitel from "../../components/HeaderTitel";
 import SelecterBar from "../../components/SelecterBar";
 import HeightInput from "../../components/HeightInput";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import GetMeasurementsService from "../../services/GetMeasurementsService";
 import MeasurementsPanel from "../../components/MeasurementsPanel";
 import { CameraViewport } from "../../components/CameraViewport";
-import EditMeasurementModal from "../../components/EditMeasurementModal/EditMeasurementModal";
 import DescriptionEntry from "../../components/DescriptionEntry/DescriptionEntry";
 
 // ── Main Component ────────────────────────────────────
 export default function AIScan(props) {
+
+  const navigate = useNavigate();
   const [uploadedImage, setUploadedImage] = useState(props.image || null);
   console.log("UPLOADED IMAGE", uploadedImage);
-
-  const [FinalMesurements, setFinalMesurements] = useState(
-    props.EditedValues || null,
-  );
 
   const email = localStorage.getItem("customerEmail");
 
   console.log("EMAIL", email);
-
-  console.log("FinalMesurements", FinalMesurements);
+  
   const [capturedImage, setCapturedImage] = useState(null);
   const [cameraEnabled, setCameraEnabled] = useState(false);
   const [stream, setStream] = useState(null);
@@ -38,8 +34,9 @@ export default function AIScan(props) {
 
   const location = useLocation();
 
-  const measurementsDataObject =
-    location.state?.measurementsImageAndHeightObject;
+  const measurementsDataObject = location.state?.measurementsImageAndHeightObject;
+
+  const [continueUp, setContinue] = useState(false);
 
   console.log(measurementsDataObject);
 
@@ -210,10 +207,7 @@ export default function AIScan(props) {
   };
 
   const handleContinue = () => {
-    if (!done) {
-      setError("Please complete the AI scan before continuing.");
-      return;
-    }
+    setContinue(true);
   };
 
   return (
@@ -336,6 +330,7 @@ export default function AIScan(props) {
                   <MeasurementsPanel
                     visible={showResults}
                     results={measurementResults}
+                    continueNew={continueUp}
                   />
                 </div>
               </>
@@ -361,9 +356,14 @@ export default function AIScan(props) {
               Back
             </button>
             <button
-              className={`ais-continue-btn ${done ? "" : "ais-continue-disabled"}`}
-              onClick={handleContinue}
-              disabled={!done}
+              //type="button"
+              // className={`ais-continue-btn ${done ? "" : "ais-continue-disabled"}`}
+              className="ais-continue-btn"
+              onClick={() => {
+                handleContinue();
+                navigate("/order-confirmed");
+              }}
+              //disabled={!done}
             >
               Continue
               <svg

@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import MeasurementsService from "../services/MeasurementsService";
 
 const UPPER_BODY_KEYS = [
   "shoulder",
@@ -39,8 +39,7 @@ const LOWER_BODY_KEYS = [
   "sideSplitHeight",
 ];
 
-
-function ResultsArray({ resultsArray, onMeasurementsChange }) {
+function ResultsArray({ resultsArray, onMeasurementsChange, continuePass }) {
   const isValidObject =
     resultsArray &&
     typeof resultsArray === "object" &&
@@ -164,6 +163,12 @@ function ResultsArray({ resultsArray, onMeasurementsChange }) {
 
   console.log("editedValues:", editedValues);
 
+  if (continuePass) {
+    console.log("newwwwwwwwwwwwww", continuePass);
+    const measurementsService = new MeasurementsService();
+    measurementsService.addMeasurements(editedValues)
+  }
+
   return (
     <>
       {MEASUREMENTS.map(({ group, items }) => (
@@ -231,14 +236,24 @@ function ResultsArray({ resultsArray, onMeasurementsChange }) {
   );
 }
 
-export default function MeasurementsPanel({ visible, results }) {
+export default function MeasurementsPanel({ visible, results, continueNew }) {
   const resultSummary =
     results && typeof results === "object"
       ? JSON.stringify(results, null, 2)
       : null;
 
+  const continueValue = continueNew;
+
   console.log("Results:-----------", results);
   console.log("resultSummary:-----------", resultSummary);
+  console.log("newContinue Pass", continueValue);
+
+  // useEffect(() => {
+  //   if (continueNew) {
+  //     console.log("newContinue Pass", continueNew);
+  //     <ResultsArray continuePass={continueNew} />
+  //   }
+  // }, [continueNew]);
 
   return (
     <div className={`bm-panel ${visible ? "bm-panel--visible" : ""}`}>
@@ -316,7 +331,7 @@ export default function MeasurementsPanel({ visible, results }) {
       </div>
 
       <div className="bm-divider" />
-      <ResultsArray resultsArray={results} />
+      <ResultsArray resultsArray={results} continuePass={continueValue} />
     </div>
   );
 }
