@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import MeasurementsService from "../services/MeasurementsService";
 
 const UPPER_BODY_KEYS = [
@@ -45,36 +45,67 @@ function ResultsArray({ resultsArray, onMeasurementsChange, continuePass }) {
     typeof resultsArray === "object" &&
     !Array.isArray(resultsArray);
 
-  const excludedKeys = ["aiConfidence", "notes"];
+  const filteredResults = useMemo(() => {
+    if (!isValidObject) {
+      return {};
+    }
 
-  // filteredResults - recomputed every render straight from props (cheap, no need to memoize unless huge)
-  const filteredResults = isValidObject
-    ? Object.fromEntries(
-        Object.entries(resultsArray).filter(
-          ([key, value]) => value != null && !excludedKeys.includes(key),
-        ),
-      )
-    : {};
+    const excludedKeys = ["notes"];
+
+    return Object.fromEntries(
+      Object.entries(resultsArray).filter(
+        ([key, value]) => value != null && !excludedKeys.includes(key),
+      ),
+    );
+  }, [isValidObject, resultsArray]);
 
   // editedValues - current values shown/edited in UI (key -> value)
   const [editedValues, setEditedValues] = useState(filteredResults);
-
-  // Track the last resultsArray we synced from, WITHOUT useEffect.
-  // This is React's official "adjusting state when a prop changes" pattern.
-  const [prevResultsArray, setPrevResultsArray] = useState(resultsArray);
-
-  if (resultsArray !== prevResultsArray) {
-    setPrevResultsArray(resultsArray);
-    if (isValidObject) {
-      setEditedValues(filteredResults);
-    }
-  }
 
   // editingKey - which tile is currently in "edit mode"
   const [editingKey, setEditingKey] = useState(null);
 
   // tempInput - the text currently typed in the active input box
   const [tempInput, setTempInput] = useState("");
+  const [saveStatus, setSaveStatus] = useState({ type: "idle", message: "" });
+  const [isSaving, setIsSaving] = useState(false);
+  const hasSavedRef = useRef(false);
+
+  useEffect(() => {
+    if (!continuePass || !isValidObject || hasSavedRef.current) {
+      return;
+    }
+
+    const saveMeasurements = async () => {
+      setIsSaving(true);
+      setSaveStatus({ type: "loading", message: "Saving measurements..." });
+
+      const measurementsService = new MeasurementsService();
+      const result = await measurementsService.addMeasurements(editedValues);
+
+      if (result.success) {
+        const responseText =
+          result.data === true || result.data === false
+            ? `Response received: ${result.data}`
+            : result.data ?? "Response received successfully";
+
+        setSaveStatus({
+          type: "success",
+          message: `Saved successfully. ${responseText}`,
+        });
+      } else {
+        setSaveStatus({
+          type: "error",
+          message: result.message || "Could not save measurements.",
+        });
+      }
+
+      setIsSaving(false);
+    };
+
+    hasSavedRef.current = true;
+    saveMeasurements();
+  }, [continuePass, editedValues, isValidObject]);
 
   if (!isValidObject) {
     console.log("INVALID RESULTS ARRAY:", resultsArray);
@@ -163,14 +194,39 @@ function ResultsArray({ resultsArray, onMeasurementsChange, continuePass }) {
 
   console.log("editedValues:", editedValues);
 
-  if (continuePass) {
-    console.log("newwwwwwwwwwwwww", continuePass);
-    const measurementsService = new MeasurementsService();
-    measurementsService.addMeasurements(editedValues)
-  }
-
   return (
     <>
+      {(saveStatus.message || isSaving) && (
+        <div
+          style={{
+            marginBottom: "12px",
+            padding: "8px 10px",
+            borderRadius: "8px",
+            fontSize: "13px",
+            color:
+              saveStatus.type === "error"
+                ? "#b91c1c"
+                : saveStatus.type === "success"
+                  ? "#166534"
+                  : "#92400e",
+            backgroundColor:
+              saveStatus.type === "error"
+                ? "#fef2f2"
+                : saveStatus.type === "success"
+                  ? "#f0fdf4"
+                  : "#fffbeb",
+            border:
+              saveStatus.type === "error"
+                ? "1px solid #fecaca"
+                : saveStatus.type === "success"
+                  ? "1px solid #bbf7d0"
+                  : "1px solid #fde68a",
+          }}
+        >
+          {isSaving ? "Saving measurements..." : saveStatus.message}
+        </div>
+      )}
+
       {MEASUREMENTS.map(({ group, items }) => (
         <div key={group} className="bm-group">
           <p className="bm-group-label">{group}</p>
