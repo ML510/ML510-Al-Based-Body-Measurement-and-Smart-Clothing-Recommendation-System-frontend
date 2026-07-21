@@ -33,10 +33,6 @@ const router = createBrowserRouter([
   {
     path: "/order-confirmed",
     element: <OrderConfirmed />,
-  },
-  {
-    path: "/description-entry",
-    element: <DescriptionEntry />,
   }
   
 ]);
